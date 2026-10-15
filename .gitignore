@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.package-cache/
+var/
+.env
+_site/
+dist/
+.playwright-mcp/
+.agents/
+.codex/
+.aws/

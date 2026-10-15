@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b35">
+  <meta name="description" content="Inspect temporal payment decision replays, changed policies, and the limits of historical evidence.">
+  <title>RiskReplay · Decision review</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d5147'/%3E%3Cpath d='M9 10h8a5 5 0 0 1 0 10h-2m-6-6v8m-3-3 3 3 3-3' fill='none' stroke='%23dbf298' stroke-width='2.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to report</a>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-replay" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 6M4 4v5h5"/><path d="M12 8v4l3 2"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-compare" viewBox="0 0 24 24"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></symbol>
+    <symbol id="i-model" viewBox="0 0 24 24"><path d="M4 20V10m5 10V4m6 16v-7m5 7V7M2 20h20"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v5m0 3v1"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8m-8 4h8"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="RiskReplay home">
+        <span class="brand-mark"><svg class="icon"><use href="#i-replay"/></svg></span>
+        <span>RiskReplay<span class="brand-dot">.</span></span>
+      </a>
+      <div class="workspace-label">ENGINEERING WORKSPACE</div>
+      <nav aria-label="Report views" class="primary-nav">
+        <button class="nav-item active" data-view="review" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg><span>Decision review</span><span class="nav-arrow">↗</span></button>
+        <button class="nav-item" data-view="comparison"><svg class="icon"><use href="#i-compare"/></svg><span>Policy comparison</span></button>
+        <button class="nav-item" data-view="models"><svg class="icon"><use href="#i-model"/></svg><span>Model evidence</span></button>
+        <button class="nav-item" data-view="integrity"><svg class="icon"><use href="#i-shield"/></svg><span>Integrity checks</span></button>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-note"><span class="small-label">THE REPLAY PRINCIPLE</span><p>Only what was known.<br>Exactly when it was known.</p><span class="note-line"></span></div>
+      <div class="sidebar-bottom">
+        <div class="local-status"><span class="status-dot"></span> Local environment<span class="local-tag">READ ONLY</span></div>
+        <p>Inspect persisted runs.<br>Every decision keeps its evidence.</p>
+        <div class="sidebar-version">RISKREPLAY <span>v0.1</span></div>
+      </div>
+    </aside>
+
+    <main id="main" tabindex="-1">
+      <div class="topline"><div><span>WORKSPACE</span><span class="breadcrumb-slash">/</span><strong>Replay lab</strong></div><span class="environment-pill"><span class="status-dot"></span><span id="mode-label">LOCAL REPORTS</span></span></div>
+      <header class="page-heading">
+        <div><h1 id="view-title">Decision review</h1><p id="view-description">Reconstruct the past. Understand what changed.</p></div>
+        <div class="heading-actions">
+          <label class="run-selector"><span>RUN</span><select id="run-select" aria-label="Select replay run" disabled><option>Loading runs…</option></select><svg class="icon"><use href="#i-chevron"/></svg></label>
+          <details class="export-menu" id="export-menu"><summary class="button button-dark"><svg class="icon"><use href="#i-download"/></svg>Export<span class="export-chevron">⌄</span></summary><div class="export-options"><span class="small-label">PERSISTED RUN ARTIFACTS</span><a id="export-json" href="#">JSON report <span>.json</span></a><a id="export-csv" href="#">Decision table <span>.csv</span></a><a id="export-html" href="#">Readable report <span>.html</span></a></div></details>
+        </div>
+      </header>
+
+      <div id="global-message" class="global-state" role="status" aria-live="polite"><span class="loader"></span><h2>Loading local runs</h2><p>Reading persisted reports and their evidence.</p></div>
+      <div id="partial-message" class="partial-message" role="status" hidden></div>
+
+      <div id="report-content" hidden>
+        <section class="evidence-boundary" aria-label="Evidence boundary"><div class="boundary-icon"><svg class="icon"><use href="#i-shield"/></svg></div><div><strong id="evidence-heading">Historical evidence, explicit boundaries</strong><p id="information-regime">Candidate and original policies use the same historical knowledge cutoff.</p></div><span id="dataset-kind" class="boundary-tag">OWNED SYNTHETIC</span></section>
+        <section id="summary-metrics" class="metric-grid" aria-label="Run summary"></section>
+        <div class="run-context"><div><span class="tiny-dot"></span><span id="run-context-text"></span></div><button id="view-integrity-link" class="text-button">View integrity checks <span>↗</span></button></div>
+
+        <section id="view-review" class="view-panel">
+          <div class="review-layout">
+            <section class="panel decisions-panel" aria-label="Decisions">
+              <div class="panel-heading"><div><h2>Decisions <span id="decision-count" class="count-tag">0</span></h2><p>Recorded actions against reconstructed evidence.</p></div><span class="small-label">ATTENTION FIRST</span></div>
+              <div class="table-controls"><div class="filter-tabs" role="group" aria-label="Filter decisions"><button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all">0</span></button><button class="filter-tab" data-filter="matched" aria-pressed="false">Matched <span id="count-matched">0</span></button><button class="filter-tab" data-filter="mismatched" aria-pressed="false">Mismatched <span id="count-mismatched">0</span></button><button class="filter-tab" data-filter="incomplete" aria-pressed="false">Incomplete <span id="count-incomplete">0</span></button></div><label class="search-box"><svg class="icon"><use href="#i-search"/></svg><input id="transaction-search" type="search" placeholder="Search transaction or cohort…" aria-label="Search transaction ID or cohort" autocomplete="off"><span class="search-shortcut">/</span></label></div>
+              <div class="table-scroll"><table class="decision-table"><thead><tr><th scope="col">TRANSACTION</th><th scope="col">RECORDED <span class="inline-arrow">→</span> REPLAY</th><th scope="col">RESULT</th><th scope="col">CANDIDATE</th></tr></thead><tbody id="decision-rows"></tbody></table></div>
+              <div id="table-empty" class="table-empty" hidden><svg class="icon"><use href="#i-search"/></svg><h3>No matching decisions</h3><p>Try another transaction ID, cohort, or result filter.</p><button id="clear-filters" class="button button-light">Clear filters</button></div>
+              <div class="table-footer"><span id="pagination-label" role="status">No decisions</span><div class="pagination"><button id="page-prev" class="icon-button" aria-label="Previous page">←</button><button id="page-next" class="icon-button" aria-label="Next page">→</button></div></div>
+            </section>
+
+            <aside class="panel incident-panel" aria-label="Transaction incident detail">
+              <div id="incident-empty" class="incident-empty"><svg class="icon"><use href="#i-file"/></svg><h2>Select a decision</h2><p>Inspect its knowledge cutoff, explanation, and contributing events.</p></div>
+              <div id="incident-content" hidden>
+                <div class="incident-heading"><div class="eyebrow"><span class="tiny-dot"></span> DECISION RECORD</div><div class="incident-title"><h2 id="incident-id"></h2><span id="incident-status"></span></div><div id="incident-meta" class="muted"></div></div>
+                <div class="detail-tabs" role="tablist" aria-label="Incident evidence"><button class="detail-tab active" id="tab-trace" data-detail="trace" role="tab" aria-controls="incident-trace" aria-selected="true">Decision trace</button><button class="detail-tab" id="tab-features" data-detail="features" role="tab" aria-controls="incident-features" aria-selected="false" tabindex="-1">Features</button><button class="detail-tab" id="tab-timeline" data-detail="timeline" role="tab" aria-controls="incident-timeline" aria-selected="false" tabindex="-1">Timeline</button></div>
+                <div id="incident-trace" class="detail-body" role="tabpanel" aria-labelledby="tab-trace"></div>
+                <div id="incident-features" class="detail-body" role="tabpanel" aria-labelledby="tab-features" hidden></div>
+                <div id="incident-timeline" class="detail-body" role="tabpanel" aria-labelledby="tab-timeline" hidden></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="view-comparison" class="view-panel" hidden><div id="comparison-content"></div></section>
+        <section id="view-models" class="view-panel" hidden><div id="model-content"></div></section>
+        <section id="view-integrity" class="view-panel" hidden><div id="integrity-content"></div></section>
+
+        <footer class="report-footer"><div><span class="footer-brand">RiskReplay</span><span>Evidence before conclusions.</span></div><span id="report-identity"></span></footer>
+      </div>
+    </main>
+  </div>
+  <noscript><p class="noscript">JavaScript is required to inspect runs in this interface. The read-only JSON API is available at <a href="/api/runs">/api/runs</a>.</p></noscript>
+</body>
+</html>
