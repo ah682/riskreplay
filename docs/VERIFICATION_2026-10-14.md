@@ -1,5 +1,9 @@
 # Executed requirement audit — 2026-10-14
 
+This is a historical audit. Generated artifact paths refer to local files excluded
+from the source repository. See the [current verification record](VERIFICATION.md)
+for the published release and hosted checks.
+
 The full original prompt was audited, including all 12 mandatory acceptance cases.
 The audit found and fixed temporal target handling, input-validation and integrity
 defects. The final automated suite passes in both the documented local environment
@@ -124,9 +128,9 @@ The larger profile and environment audit provide additional checks.
 ## Default results and identity
 
 Seed 17; run **`rr-3d76233462ac420b`**. Open the
-[inspector](../var/demo/runs/rr-3d76233462ac420b/inspector.html),
-[readable report](../var/demo/runs/rr-3d76233462ac420b/report.html) or
-[machine report](../var/demo/runs/rr-3d76233462ac420b/report.json).
+inspector (local artifact: `var/demo/runs/rr-3d76233462ac420b/inspector.html`),
+readable report (local artifact: `var/demo/runs/rr-3d76233462ac420b/report.html`) or
+machine report (local artifact: `var/demo/runs/rr-3d76233462ac420b/report.json`).
 
 | Identity | SHA256 |
 | --- | --- |
@@ -248,14 +252,14 @@ checksums for other exports. New final runs have verified six-file manifests.
 
 ## Machine evidence
 
-[Final aggregate audit](../var/verification/final-audit.json) reconciles all final source, report and evidence identities.
+Final aggregate audit (local artifact: `var/verification/final-audit.json`) reconciles all final source, report and evidence identities.
 
-- [Fresh installation](../var/verification/installation.json) and [environment/source/wheel audit](../var/verification/environment-audit.json)
-- [Final fresh-environment JUnit](../var/verification/final-pypi-tests.xml)
-- [Full-size reproducibility](../var/verification/reproducibility-full.json)
-- [Delivery/storage/CLI audit](../var/verification/storage-audit.json)
-- [Independent model audit](../var/verification/model-audit.json)
-- [Raw final performance](../var/verification/performance-final.json)
-- [TCP capability](../var/verification/tcp-capability.json)
-- [Current browser component and ASGI audit](../var/verification/ui-audit.json)
-- [Historical browser assertions](../var/verification/browser.json), [desktop](../var/verification/inspector-1440.png), [500px screenshot](../var/verification/inspector-500.png)
+- Fresh installation (local artifact: `var/verification/installation.json`) and environment/source/wheel audit (local artifact: `var/verification/environment-audit.json`)
+- Final fresh-environment JUnit (local artifact: `var/verification/final-pypi-tests.xml`)
+- Full-size reproducibility (local artifact: `var/verification/reproducibility-full.json`)
+- Delivery/storage/CLI audit (local artifact: `var/verification/storage-audit.json`)
+- Independent model audit (local artifact: `var/verification/model-audit.json`)
+- Raw final performance (local artifact: `var/verification/performance-final.json`)
+- TCP capability (local artifact: `var/verification/tcp-capability.json`)
+- Current browser component and ASGI audit (local artifact: `var/verification/ui-audit.json`)
+- Historical browser assertions (local artifact: `var/verification/browser.json`), desktop (local artifact: `var/verification/inspector-1440.png`), 500px screenshot (local artifact: `var/verification/inspector-500.png`)

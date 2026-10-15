@@ -1,5 +1,9 @@
 # Executed release verification
 
+This is a historical audit. Generated artifact paths refer to local files excluded
+from the source repository. See the [current verification record](VERIFICATION.md)
+for the published release and hosted checks.
+
 Verified locally on 2026-10-13. This is an owned synthetic demonstration. No merchant
 data, payment connection, public deployment or customer validation was performed.
 
@@ -31,9 +35,9 @@ pre-defect recording, so that independent audit is explicitly unavailable there.
 ## Saved release identity
 
 Seed 17; default run `rr-48ab91e01d6c3783`. Open the
-[interactive inspector](../var/demo/runs/rr-48ab91e01d6c3783/inspector.html),
-[readable report](../var/demo/runs/rr-48ab91e01d6c3783/report.html), or
-[full machine report](../var/demo/runs/rr-48ab91e01d6c3783/report.json).
+interactive inspector (local artifact: `var/demo/runs/rr-48ab91e01d6c3783/inspector.html`),
+readable report (local artifact: `var/demo/runs/rr-48ab91e01d6c3783/report.html`), or
+full machine report (local artifact: `var/demo/runs/rr-48ab91e01d6c3783/report.json`).
 Generated artifacts are recreated by `make demo`.
 
 | Identity | SHA256 |
@@ -147,16 +151,16 @@ This is one local measurement, not an SLA.
 
 The two fresh 600-row runs both yielded semantic SHA256
 `fb033342d46a7df67f39d9bc7596f9bfb33123b2b5b54aed42534e4919f19ac9`.
-[Machine evidence](../var/verification/reproducibility.json) records identical
+Machine evidence (local artifact: `var/verification/reproducibility.json`) records identical
 datasets and both model files. Run ID, creation time, performance and the derived
 semantic-hash field are excluded from semantic comparison. Tests also repeat two
 320-row workflows and mutate held-out data to verify fitting isolation.
 
 ## Browser evidence and environment limits
 
-[Browser evidence](../var/verification/browser.json) contains all 38 assertions.
-The [desktop](../var/verification/inspector-1440.png) and
-[narrow](../var/verification/inspector-500.png) screenshots were visually inspected:
+Browser evidence (local artifact: `var/verification/browser.json`) contains all 38 assertions.
+The desktop (local artifact: `var/verification/inspector-1440.png`) and
+narrow (local artifact: `var/verification/inspector-500.png`) screenshots were visually inspected:
 readable type/contrast, responsive navigation/cards/table and retained incident
 detail. The desktop explicitly shows the missing-model reason. The actual narrow
 viewport was 500px; Chrome imposed a minimum width, so 390px is not claimed.

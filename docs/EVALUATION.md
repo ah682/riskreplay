@@ -88,7 +88,7 @@ Separate probes intentionally propose a future label and an invalid time split,
 which must raise. This small injected experiment does not establish a real-world
 detection rate.
 
-`make reproduce` runs two complete600-transaction workflows in fresh temporary
+`make reproduce` runs two complete 600-transaction workflows in fresh temporary
 roots, comparing complete semantic reports, decision outputs, metric outputs,
 dataset hashes and model hashes. Only run ID, creation timestamp and performance
 measurements are excluded as nonsemantic metadata. `var/verification/reproducibility.json`

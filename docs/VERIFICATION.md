@@ -1,15 +1,37 @@
-# Executed codebase review — 2026-10-15
+# Verification record
 
-## Static hosting preparation
+## GitHub Pages release — 2026-10-16
 
-The later portfolio packaging check passes **246 tests** in 39.02s, Ruff and
+The final portfolio packaging check passes **246 tests** in 40.94s, Ruff and
 Python compilation. All 34 Python files pass format checking. `make pages`
-generates and exports the 1,800-transaction demo with the dataset and semantic
-hashes reported below. Six exporter tests verify file fidelity, synthetic-only
+generates and exports the 1,800-transaction demo. Six exporter tests verify file
+fidelity, synthetic-only
 publication, tamper detection, required manifests and safe output ownership.
-Hosted workflow and deployment checks are pending.
+The public [repository](https://github.com/ah682/riskreplay) and
+[static inspector](https://ah682.github.io/riskreplay/) are live. Both
+[release checks](https://github.com/ah682/riskreplay/actions/runs/38818317655) and
+[deployment](https://github.com/ah682/riskreplay/actions/runs/38818317662) succeeded
+for source commit `4fd3e1b`. The runner installed the pinned packages from PyPI,
+ran all 246 tests and generated the full synthetic investigation.
 
-## Core review
+Live verification passed **37 browser assertions** at 390/768/1440px, including
+matched/mismatched/incomplete views, Sunday evidence, model denominators,
+responsive width, keyboard handlers and HTTP view/transaction deep links. These
+checks use DOM-dispatched events. The saved inspector's Home navigation also
+passed. All **seven published files** returned HTTP 200 and matched the site's
+SHA-256 manifest, including JSON, CSV and readable HTML exports. No JavaScript
+page errors were observed. [Machine-readable release evidence](evidence/pages-release.json)
+records the assertions, checksums and automation boundaries.
+
+The checked deployment is run `rr-0cb254753dba4b2a`, dataset
+`e9545ebf9c9c10dbc454fb9fa2298592dad2077250669222621975a21054cfac`, semantic hash
+`536912477b177f6812064e8152e9c56dcb9ce078407d8122ddd11944ecc0290b`.
+The hosted runner uses Python 3.12.15; the earlier workstation audit used 3.12.3.
+Artifact identities can differ across environments. The hosted decision CSV is
+byte-identical to the workstation export; cross-machine model-byte identity is
+not a completed gate.
+
+## Core review — 2026-10-15
 
 The original prompt and delivered code were re-reviewed. The original 190 tests
 passed, but independent source reviews and small failure probes found eight defects.
@@ -140,17 +162,17 @@ Larger seed-17 profile, 7,200 transactions, run **`rr-78c1bc02dac8ba9b`**:
 ## Explicitly uncompleted checks
 
 Loopback binding still fails with `EPERM`. Actual ASGI requests and browser
-components were tested separately; live HTTP, HTTP deep links, browser export
-downloads and browser enforcement of server headers remain unverified. Browser
+components were tested separately; live HTTP integration with the local FastAPI
+server and browser enforcement of its headers remain unverified. Public static
+HTTP, deep links and export-file bytes now pass the Pages checks above. Browser
 file navigation was blocked in the earlier audit and was not bypassed here.
-Fresh pointer automation timed out waiting for stable rendering (2.5s); fresh
-screenshot capture timed out after fonts loaded (5s). Programmatic DOM clicks,
-real keyboard events, accessibility snapshots and rendered layout/contrast checks
-passed; no new screenshot or physical-pointer success is claimed.
+Fresh hosted pointer and screenshot attempts timed out after 5s; the browser
+download event was not observed within 10s. The live assertions therefore use
+DOM clicks, input events and keyboard-handler events. No fresh screenshot,
+physical-pointer success or browser-native saved-download success is claimed.
 
 The browser collector deliberately records `fully_verified: false` despite all
-component assertions passing. Hosted CI was not run, and a real Git repository is
-not configured. Fresh uncached package downloads were blocked. Genuine merchant
+component assertions passing. Hosted CI, repository publication and Pages
+deployment are now verified separately. Genuine merchant
 usefulness still requires the permitted data and comparison described in
-[LIMITATIONS](LIMITATIONS.md). No push, deployment, payment change or external
-message was performed.
+[LIMITATIONS](LIMITATIONS.md).

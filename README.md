@@ -5,13 +5,15 @@ replay quietly used information that did not exist at the time. RiskReplay makes
 those differences inspectable.
 
 It reconstructs historical payment decisions from the evidence available at each
-cutoff, compares an archived policy with a candidate, and evaluates real
-CPU-trained logistic regression and gradient-boosted classifiers on frozen time
-splits. Missing evidence stays visible throughout the investigation.
+cutoff, compares an archived policy with a candidate, and trains and evaluates
+logistic regression and gradient-boosted classifiers on frozen time splits.
+Missing evidence stays visible throughout the investigation.
 
 **Python · scikit-learn · Parquet · SQLite · FastAPI · JavaScript**
 
-<!-- Activate after deployment is verified: [Explore the interactive demo](https://ah682.github.io/riskreplay/) -->
+**[Explore the interactive demo](https://ah682.github.io/riskreplay/)** ·
+[Model evidence](https://ah682.github.io/riskreplay/?view=models) ·
+[Build checks](https://github.com/ah682/riskreplay/actions)
 
 The demonstration contains **1,800 owned synthetic transactions**. The hosted
 version is a read-only saved investigation: filtering, timelines, model evidence

@@ -1,20 +1,32 @@
 # Build state
 
-## Status — 2026-10-15
+## Published release — 2026-10-16
 
-Static hosting is prepared for the public `ah682/riskreplay` repository. The
-portfolio README now describes the ML engineering decisions and measured limits.
-`make check` passes 246 tests, lint and compilation; all 34 Python files pass
-format checking. `make pages` exports the verified 1,800-transaction run with the
-same dataset and semantic hashes recorded below. Hosted deployment is pending.
+The source is published at [ah682/riskreplay](https://github.com/ah682/riskreplay),
+and the [interactive demo](https://ah682.github.io/riskreplay/) is live on GitHub
+Pages. The portfolio README describes the ML engineering decisions, measured
+limits and local workflow. It links directly to the demonstration and model view.
+
+`make check` passes 246 tests in 40.94s, plus lint and compilation. All 34 Python
+files pass format checking. GitHub's [release checks](https://github.com/ah682/riskreplay/actions/runs/38818317655)
+and [Pages workflow](https://github.com/ah682/riskreplay/actions/runs/38818317662)
+both succeeded for source commit `4fd3e1b`. The hosted runner installed the exact
+dependencies from PyPI, ran the suite, generated the demo and deployed it.
+
+The live site passes 37 browser checks at 390/768/1440px using DOM interactions,
+including filters, evidence views, responsive width and HTTP deep links. All
+seven public HTML/JSON/CSV files return HTTP 200 and match the deployment's SHA-256
+manifest. The saved Home link also loads successfully. See
+[release evidence](evidence/pages-release.json) and [VERIFICATION](VERIFICATION.md).
 
 Six new exporter tests cover report fidelity, synthetic-only publication, source
 tampering, missing manifests, unrelated directories and symlink/overlap safety.
 Independent review found the missing-manifest case; its regression failed before
 the exporter was tightened. The Pages workflow checks and generates the demo
-before deployment, with no additional application dependencies.
+before deployment, with no additional application dependencies. Both `index.html`
+and `inspector.html` preserve the saved inspector's Home navigation.
 
-## Earlier codebase review
+## Earlier codebase review — 2026-10-15
 
 The requested codebase re-review and repairs are complete for the available local
 checks. All 12 original mandatory acceptance cases pass. The final source passes
@@ -73,18 +85,21 @@ Earlier audits remain historical evidence.
 
 ## Remaining gates
 
-Fresh uncached PyPI installation was blocked by DNS in this session; exact-pin
-offline setup and the built wheel were verified instead. The successful
-2026-10-14 PyPI installation remains a separate historical result.
+Local uncached PyPI installation was blocked by DNS; the later GitHub runner
+successfully downloaded the locked packages. The hosted build uses Python
+3.12.15; the workstation audit used 3.12.3. Earlier same-runtime reproducibility
+checks remain valid; byte-identical artifacts across different machines are not
+claimed. Each deployment publishes its own identity and checksum manifest.
 
 Loopback sockets still cannot bind (`EPERM`). Browser components and actual ASGI
-requests pass separately; live browser/HTTP integration, downloads, HTTP deep links
-and browser enforcement of server headers remain unverified. Fresh pointer and
-screenshot attempts timed out; no fresh screenshot or physical-pointer success
-is claimed. The browser audit deliberately retains `fully_verified: false`.
+requests pass separately; live browser integration with the local FastAPI server
+and browser enforcement of its headers remain unverified. Public static HTTP,
+deep links and export bytes were verified separately on Pages. Pointer,
+screenshot and browser-native download automation still timed out. The live
+checks use DOM-dispatched events; they do not establish those native interaction
+gates. The earlier component audit retains `fully_verified: false`.
 
-The public repository has been created; source upload and hosted workflow
-verification are pending. Genuine merchant validation requires permitted incidents,
+Genuine merchant validation requires permitted incidents,
 original archives, availability logs, independent production feature captures and
 measured investigation time against the team's current method. Those inputs were
 not supplied. Further external validation depends on those capabilities

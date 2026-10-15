@@ -1,0 +1,333 @@
+{
+  "completed_at": "2026-10-15T23:00:17.644Z",
+  "repository": "https://github.com/ah682/riskreplay",
+  "site": "https://ah682.github.io/riskreplay/",
+  "source_commit": "4fd3e1b",
+  "protocol": "Live HTTPS navigation and DOM-dispatched input, click and keyboard-handler events; public export GETs verified against the deployed SHA-256 manifest.",
+  "local_checks": {
+    "tests_passed": 246,
+    "pytest_seconds": 40.94,
+    "ruff": "passed",
+    "compilation": "passed",
+    "python_files_formatted": 34
+  },
+  "hosted_checks": {
+    "tests_passed": 246,
+    "pytest_seconds": 87.5,
+    "release": {
+      "status": "success",
+      "url": "https://github.com/ah682/riskreplay/actions/runs/38818317655"
+    },
+    "deployment": {
+      "status": "success",
+      "url": "https://github.com/ah682/riskreplay/actions/runs/38818317662"
+    },
+    "network_dependency_install": "succeeded"
+  },
+  "browser": {
+    "url": "https://ah682.github.io/riskreplay/",
+    "completed_at": "2026-10-15T23:00:17.644Z",
+    "checks": [
+      {
+        "name": "public HTTPS page loads",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "owned synthetic scope",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "full 1800 transaction run",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: incomplete fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: missing model explanation",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: mismatch fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: Sunday selection",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: later evidence boundary",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: evidence tab keyboard handler",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: candidate differences",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: held-out denominators",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: integrity view",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "390: responsive page width",
+        "passed": true,
+        "observed": {
+          "width": 390,
+          "documentWidth": 375
+        }
+      },
+      {
+        "name": "768: incomplete fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: missing model explanation",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: mismatch fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: Sunday selection",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: later evidence boundary",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: evidence tab keyboard handler",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: candidate differences",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: held-out denominators",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: integrity view",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "768: responsive page width",
+        "passed": true,
+        "observed": {
+          "width": 768,
+          "documentWidth": 753
+        }
+      },
+      {
+        "name": "1440: incomplete fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: missing model explanation",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: mismatch fixture",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: Sunday selection",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: later evidence boundary",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: evidence tab keyboard handler",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: candidate differences",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: held-out denominators",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: integrity view",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "1440: responsive page width",
+        "passed": true,
+        "observed": {
+          "width": 1440,
+          "documentWidth": 1425
+        }
+      },
+      {
+        "name": "HTTP model deep link",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "HTTP transaction deep link",
+        "passed": true,
+        "observed": null
+      },
+      {
+        "name": "export links remain within the project",
+        "passed": true,
+        "observed": [
+          {
+            "href": "https://ah682.github.io/riskreplay/report.json",
+            "download": true
+          },
+          {
+            "href": "https://ah682.github.io/riskreplay/decisions.csv",
+            "download": true
+          },
+          {
+            "href": "https://ah682.github.io/riskreplay/report.html",
+            "download": true
+          }
+        ]
+      },
+      {
+        "name": "no JavaScript page errors",
+        "passed": true,
+        "observed": []
+      }
+    ],
+    "passed": 37,
+    "failed": [],
+    "errors": []
+  },
+  "assets": {
+    "manifest": {
+      "mode": "owned_synthetic_static_demo",
+      "run_id": "rr-0cb254753dba4b2a",
+      "dataset_hash": "e9545ebf9c9c10dbc454fb9fa2298592dad2077250669222621975a21054cfac",
+      "semantic_hash": "536912477b177f6812064e8152e9c56dcb9ce078407d8122ddd11944ecc0290b",
+      "files": {
+        "index.html": "cce5c5e48b5ae6e24f7f5b9e4a6ba580092080b2c66df4bee0021aab7f88502e",
+        "inspector.html": "cce5c5e48b5ae6e24f7f5b9e4a6ba580092080b2c66df4bee0021aab7f88502e",
+        "report.json": "ac788bfdd14312888641cdc53d0c8869618aeaacf77576e194d8beb21a9b9089",
+        "decisions.csv": "b3a60ea7c8608490595ad826ac799a100ebb941db85cac973848ce76fbe17746",
+        "report.html": "e1b4095ae5ad579ea5af60ed168ef095e25fe8e54de408f5e6be970655c95c94",
+        "evaluation.json": "63874e706df8ca5e600f019ec0f8fe382f0ea53a8319956f5fa3e2a1106417ba",
+        "integrity.json": "b5328a5ebfedef95977995447a26c3727e647720e5f13a171a69c2c657f24ded"
+      }
+    },
+    "files": [
+      {
+        "name": "index.html",
+        "status": 200,
+        "bytes": 12998504,
+        "sha256": "cce5c5e48b5ae6e24f7f5b9e4a6ba580092080b2c66df4bee0021aab7f88502e",
+        "verified": true
+      },
+      {
+        "name": "inspector.html",
+        "status": 200,
+        "bytes": 12998504,
+        "sha256": "cce5c5e48b5ae6e24f7f5b9e4a6ba580092080b2c66df4bee0021aab7f88502e",
+        "verified": true
+      },
+      {
+        "name": "report.json",
+        "status": 200,
+        "bytes": 18310729,
+        "sha256": "ac788bfdd14312888641cdc53d0c8869618aeaacf77576e194d8beb21a9b9089",
+        "verified": true
+      },
+      {
+        "name": "decisions.csv",
+        "status": 200,
+        "bytes": 212095,
+        "sha256": "b3a60ea7c8608490595ad826ac799a100ebb941db85cac973848ce76fbe17746",
+        "verified": true
+      },
+      {
+        "name": "report.html",
+        "status": 200,
+        "bytes": 178201,
+        "sha256": "e1b4095ae5ad579ea5af60ed168ef095e25fe8e54de408f5e6be970655c95c94",
+        "verified": true
+      },
+      {
+        "name": "evaluation.json",
+        "status": 200,
+        "bytes": 549033,
+        "sha256": "63874e706df8ca5e600f019ec0f8fe382f0ea53a8319956f5fa3e2a1106417ba",
+        "verified": true
+      },
+      {
+        "name": "integrity.json",
+        "status": 200,
+        "bytes": 266812,
+        "sha256": "b5328a5ebfedef95977995447a26c3727e647720e5f13a171a69c2c657f24ded",
+        "verified": true
+      }
+    ],
+    "versions": {
+      "joblib": "1.5.3",
+      "numpy": "2.4.6",
+      "python": "3.12.15",
+      "scikit_learn": "1.8.0",
+      "scipy": "1.17.1"
+    },
+    "all_verified": true
+  },
+  "navigation": {
+    "status": 200,
+    "deep_link_title": "Model evidence",
+    "home_url": "https://ah682.github.io/riskreplay/inspector.html",
+    "home_title": "RiskReplay · Decision review",
+    "loaded": true
+  },
+  "boundaries": [
+    "Native pointer and screenshot automation timed out after 5 seconds; no fresh screenshot or pointer success is claimed.",
+    "A native browser download event was not observed within 10 seconds. Export URLs and complete response bytes were verified over HTTPS.",
+    "Live integration with the local FastAPI server remains unverified because loopback binding is unavailable.",
+    "Artifact byte identity across different machines and Python patch versions is not established.",
+    "No genuine merchant records, production incident, causal business outcome or investigation-time validation."
+  ]
+}
