@@ -23,6 +23,8 @@ def test_static_demo_preserves_report_and_relative_exports(saved_demo, tmp_path)
     result = export_site(source, output)
     original = source / "runs" / report["run_id"]
     assert (output / "index.html").read_bytes() == (original / "inspector.html").read_bytes()
+    # The saved inspector's Home link uses this filename, including on Pages.
+    assert (output / "inspector.html").read_bytes() == (output / "index.html").read_bytes()
     for name in (
         "report.json",
         "decisions.csv",

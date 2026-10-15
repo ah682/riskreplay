@@ -13,6 +13,7 @@ make pages
 
 `make pages` generates the default seeded 1,800-transaction demonstration, then
 exports its verified report to `_site/`. The entry point is `_site/index.html`.
+The same inspector is also available as `inspector.html` for its saved Home link.
 Links are relative, so the same directory works at a project URL such as
 `https://ah682.github.io/riskreplay/` without a separate base-path setting.
 

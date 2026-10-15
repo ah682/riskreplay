@@ -19,7 +19,8 @@ if str(ROOT) not in sys.path:
 from riskreplay.reporting import validate_report, validate_run_files  # noqa: E402
 
 EXPORTS = {
-    "inspector.html": "index.html",
+    "index.html": "inspector.html",
+    "inspector.html": "inspector.html",
     "report.json": "report.json",
     "decisions.csv": "decisions.csv",
     "report.html": "report.html",
@@ -68,7 +69,7 @@ def export_site(data_dir: Path, output_dir: Path) -> dict:
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix=".riskreplay-pages-", dir=output_dir.parent))
     try:
-        for original, target in EXPORTS.items():
+        for target, original in EXPORTS.items():
             shutil.copyfile(folder / original, temporary / target)
         (temporary / ".nojekyll").write_text("")
         manifest = {
@@ -78,7 +79,7 @@ def export_site(data_dir: Path, output_dir: Path) -> dict:
             "semantic_hash": report["semantic_hash"],
             "files": {
                 target: hashlib.sha256((temporary / target).read_bytes()).hexdigest()
-                for target in EXPORTS.values()
+                for target in EXPORTS
             },
         }
         (temporary / "site-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
