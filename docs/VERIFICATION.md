@@ -1,6 +1,20 @@
 # Verification
 
-## Local maintenance checks — 26 October 2026, v0.1.1
+## Current hosted checks — 26 October 2026
+
+Source revision: [`96b1c869d88f1b838312986db4cb0bbfc4e2babf`](https://github.com/ah682/riskreplay/commit/96b1c869d88f1b838312986db4cb0bbfc4e2babf).
+Both [run 40289745732](https://github.com/ah682/riskreplay/actions/runs/40289745732)
+and [run 40289833468](https://github.com/ah682/riskreplay/actions/runs/40289833468)
+completed successfully. The public run/job records confirm that the configured
+acceptance job passed dependency installation, Ruff, the ordinary full pytest suite
+and Python compilation on the Python 3.12 Ubuntu workflow.
+
+These are current hosted software checks at that exact revision. They do not rerun
+the historical browser/model audits, establish cross-runtime model-byte identity,
+or demonstrate independent onboarding or real merchant investigations. This record
+makes no GitHub Release claim; the owner's licensing decision remains pending.
+
+## Historical local maintenance checks — 26 October 2026, v0.1.1
 
 Executed in a fresh checkout using Python 3.12.3, uv 0.11.28 and Node 24.16.0.
 `make setup` created an owned `.venv` by copying 28 exact-version public
@@ -37,8 +51,8 @@ succeeded for source `4fd3e1b` on 15 October. The
 [release evidence](evidence/pages-release.json) preserve the earlier suite,
 7,200-row model audit and browser component/static-site measurements.
 Those browser/model audits were not rerun in this maintenance pass; their counts
-must not be presented as fresh checks of v0.1.1. No new hosted CI run or GitHub
-Release is claimed by this local record.
+must not be presented as fresh checks of v0.1.1. The current hosted checks above
+are separate from those historical audits and from the restricted local record.
 
 ## Remaining gates
 
