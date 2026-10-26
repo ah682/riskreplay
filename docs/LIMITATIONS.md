@@ -30,19 +30,20 @@ selection-biased observed-label population.
   production archival retention guarantees. SQLite is only a derived local index.
 - v1 supports one recorded decision per transaction and one linear correction chain.
   Real provider mappings and repeat-decision semantics require an explicit adapter.
-- The API is read-only and loopback-only by default. In the build sandbox socket
-  binding is prohibited; real ASGI route tests and a saved interactive browser
-  inspector verify the product without claiming a running HTTP server there.
-- The 2026-10-14 audit downloaded all 28 pins from PyPI. The new 2026-10-15
-  download attempt was blocked by DNS; clean offline setup used exact cached pins.
-  The newly built wheel ran the full demo outside source with identical results,
-  and all 29 installed distributions passed compatibility checks. Hosted CI was
-  not invoked; no configured Git repository or hosted workflow target is present.
+- The API is read-only and loopback-only by default. ASGI routes and saved-file
+  browser components were checked separately. Live browser-to-local-server
+  integration remains a separate gate.
+- Hosted release checks and Pages deployment succeeded for `4fd3e1b` on
+  15 October 2026; see the dated links in [Verification](VERIFICATION.md).
+  This is historical hosted evidence, not a hosted run for every later revision.
+  The 26 October local environment reused exact installed public dependency pins;
+  fresh network downloads were unavailable. Cross-runtime model-byte identity
+  remains unverified.
 - Browser component checks use the real UI and actual captured ASGI responses.
   They do not exercise a live HTTP connection, browser downloads or server response
   headers in the browser. Saved-file browser evidence and API byte/header checks
   are recorded separately. No browser/HTTP integration success is inferred from them.
-- Fresh pointer automation and screenshot capture timed out. Browser component
+- In the October browser audit, pointer automation and screenshot capture timed out. Browser component
   assertions use DOM interactions and real keyboard events; they do not establish
   successful physical pointer interaction or a fresh visual screenshot review.
 - Earlier saved runs without export manifests retain semantic report verification

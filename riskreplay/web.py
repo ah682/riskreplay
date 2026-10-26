@@ -30,7 +30,7 @@ def create_app(data_dir: Path) -> FastAPI:
     runs_dir = Path(data_dir).resolve() / "runs"
     static_dir = Path(__file__).with_name("static")
     app = FastAPI(
-        title="RiskReplay local report API", version="0.1.0", docs_url=None, redoc_url=None
+        title="RiskReplay local report API", version="0.1.1", docs_url=None, redoc_url=None
     )
 
     @app.exception_handler(StarletteHTTPException)

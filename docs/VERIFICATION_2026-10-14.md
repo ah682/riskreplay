@@ -4,7 +4,7 @@ This is a historical audit. Generated artifact paths refer to local files exclud
 from the source repository. See the [current verification record](VERIFICATION.md)
 for the published release and hosted checks.
 
-The full original prompt was audited, including all 12 mandatory acceptance cases.
+The temporal replay contract was audited, including all 12 acceptance cases.
 The audit found and fixed temporal target handling, input-validation and integrity
 defects. The final automated suite passes in both the documented local environment
 and a fresh PyPI environment. This remains an owned synthetic local product.

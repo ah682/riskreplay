@@ -4,8 +4,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "riskreplay"
-version = "0.1.0"
+version = "0.1.1"
 description = "A local, evidence-aware temporal fraud policy replay lab"
+readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "pyarrow==20.0.0",
@@ -20,8 +21,17 @@ dependencies = [
 [dependency-groups]
 dev = ["pytest==9.1.1", "httpx==0.28.1", "ruff==0.17.0"]
 
+[project.urls]
+Homepage = "https://ah682.github.io/riskreplay/"
+Repository = "https://github.com/ah682/riskreplay"
+Issues = "https://github.com/ah682/riskreplay/issues"
+Changelog = "https://github.com/ah682/riskreplay/blob/main/CHANGELOG.md"
+
 [project.scripts]
 riskreplay = "riskreplay.cli:main"
+
+[tool.hatch.build]
+include = ["riskreplay/**", "README.md", "CONTRIBUTING.md", "CHANGELOG.md", "LICENSE*", "NOTICE*"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["riskreplay"]
@@ -34,3 +44,6 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.hatch.build.targets.sdist]
+include = ["riskreplay/", "scripts/", "tests/", "docs/", ".github/", "README.md", "CONTRIBUTING.md", "CHANGELOG.md", "LICENSE*", "NOTICE*", "Makefile", "pyproject.toml", "requirements.lock", ".env.example"]

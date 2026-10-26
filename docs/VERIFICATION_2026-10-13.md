@@ -181,7 +181,7 @@ google-chrome --headless=new --disable-gpu --disable-dev-shm-usage --no-first-ru
 
 The narrow run used a separate profile, 500×1200 and its own screenshot. On a
 normal host, `.venv/bin/python scripts/browser_qa.py` automates both and writes
-the result. No HTTP listener started in this sandbox: loopback binding was denied.
+the result. No HTTP listener started in that audit environment: loopback binding was denied.
 Actual API handlers were tested in process, and the saved UI was rendered and
 exercised in Chrome.
 
