@@ -1,11 +1,11 @@
-# Executed release verification
+# Verification — 13 October 2026
 
 This is a historical audit. Generated artifact paths refer to local files excluded
 from the source repository. See the [current verification record](VERIFICATION.md)
-for the published release and hosted checks.
+for later local and hosted checks.
 
-Verified locally on 2026-10-13. This is an owned synthetic demonstration. No merchant
-data, payment connection, public deployment or customer validation was performed.
+The local run used the project's synthetic dataset. Merchant data, payment
+connections and public deployment were outside this run.
 
 ## Commands and outcomes
 
@@ -127,7 +127,7 @@ Review capacity is floor(10% × 359) = 35, allocated before label filtering.
 Trained models select 23 mature rows and 12 unknown outcomes; rules select
 24 mature and 11 unknown. Precision for all selected transactions is unidentified.
 Average precision and trapezoidal PR-AUC differ in interpolation; coarse rule-score
-ties produce notably different results. No universal winner is claimed.
+ties produce notably different results, so the ranking depends on the metric.
 
 Validation was used for model selection. Separate sigmoid calibration was **skipped**:
 the later validation half did not satisfy 30 labels and 3 per class. This status is
@@ -147,7 +147,7 @@ One warm serial comparison pass: **1,800 transactions in 4.996852 seconds**,
 Hardware: AMD Ryzen 7 9700X 8-Core Processor, 16 logical CPUs; Linux x86_64,
 Python 3.12.3; model numerical thread limits 1. Timing includes feature construction,
 scoring and staged attribution, excluding training, timelines and exports.
-This is one local measurement, not an SLA.
+These timings describe one local run.
 
 The two fresh 600-row runs both yielded semantic SHA256
 `fb033342d46a7df67f39d9bc7596f9bfb33123b2b5b54aed42534e4919f19ac9`.
@@ -163,7 +163,7 @@ The desktop (local artifact: `var/verification/inspector-1440.png`) and
 narrow (local artifact: `var/verification/inspector-500.png`) screenshots were visually inspected:
 readable type/contrast, responsive navigation/cards/table and retained incident
 detail. The desktop explicitly shows the missing-model reason. The actual narrow
-viewport was 500px; Chrome imposed a minimum width, so 390px is not claimed.
+viewport was 500px because Chrome imposed a minimum width.
 
 The browser uses real embedded report data, an isolated profile and installed
 Chrome, without a mock API or browser download. Direct Chrome calls succeeded for
@@ -185,9 +185,8 @@ the result. No HTTP listener started in that audit environment: loopback binding
 Actual API handlers were tested in process, and the saved UI was rendered and
 exercised in Chrome.
 
-Remaining external gates: permitted genuine incident/deployment records, accurate
-provider normalization/archive coverage, production online feature comparison,
-and measured investigation time against the partner's current method. External
-CI, fresh network installation, customer feedback and payment integration remain
-unperformed; none is represented as a success.
+Follow-up work at this date included hosted CI, a fresh network install and
+payment-provider integration. Evaluating merchant usefulness would also need
+permitted incident records, checked provider mappings, online feature captures
+and investigation-time comparisons.
 

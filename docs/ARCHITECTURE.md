@@ -6,11 +6,10 @@
 → Parquet dataset → historical features → CPU training → candidate comparison
 → immutable run reports → saved inspector / read-only API`
 
-The original logging scorer is an explicitly identified deterministic fixture.
-The candidate executes a real fitted scikit-learn HistGradientBoostingClassifier;
-a genuine logistic baseline and fixed rules baseline are evaluated separately.
-`policy.score_model` is the scorer interface; there is no LLM dependency or simulated
-external service. Provider-specific live imports remain an external validation gate.
+The original logging scorer is a deterministic fixture. The candidate uses a
+fitted scikit-learn HistGradientBoostingClassifier, evaluated alongside logistic
+regression and fixed rules. `policy.score_model` provides the scorer interface.
+Provider-specific imports need an adapter and validation against source records.
 
 ## Modules
 
@@ -94,4 +93,4 @@ slashes; only run IDs and artifact names select filesystem paths.
 The inspector supports asynchronous request timeout/retry controls, empty/invalid
 runs, partial unavailable-run notices, filtering, pagination, keyboard tabs,
 selection, provenance and export. Saved inspectors contain real report data and
-need no HTTP server. No service is registered or published.
+need no HTTP server.

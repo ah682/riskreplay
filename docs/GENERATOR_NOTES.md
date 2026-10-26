@@ -1,8 +1,8 @@
-# Owned sequential simulator
+# Sequential simulator
 
 `riskreplay.generator.generate(seed=17, n_transactions=1800)` returns `events`,
-`oracle`, and `config`. The dataset is generated locally from owned simulator
-code; it includes no merchant, cardholder, provider, or third-party dataset.
+`oracle`, and `config`. The dataset is generated locally by this project's simulator; it contains no
+merchant or cardholder records.
 The generator uses a private Python RNG, a fixed UTC start of Sunday 5 January
 2025, and no wall clock or network. Exactly the requested number of distinct
 transactions is generated; duplicated deliveries and corrections add event
@@ -13,8 +13,8 @@ The 80-day simulation includes repeated account activity and short bursts,
 amounts, countries, device observations, list changes and removals, feature
 outages, delayed transaction ingestion, correction deliveries, and delayed
 outcomes. Stochastic labels depend on amount, device risk, country, and burst
-activity, with a modest distribution shift after day 40. This is a designed
-learning problem, not a claim that these relationships describe real fraud.
+activity, with a modest distribution shift after day 40. These relationships
+define the synthetic learning problem.
 The original review amount threshold changes from 350 to 250 on day 40;
 the decline amount threshold remains 900. The actual recording pipeline also
 uses archived blocklist and model/rule state.
@@ -34,8 +34,7 @@ Outcome events are initially emitted only when the original amount rule did
 not decline the transaction. Before persistence, the recording pipeline calls
 `observe_outcomes(events, actual_declined_transaction_ids)` to remove outcomes
 for every actual archived decline, including historical blocklist declines.
-A reviewed transaction is assumed to be fulfilled. This assumption is explicit
-and is not evidence for a real merchant's reviewed population. The observation
+A reviewed transaction is assumed to be fulfilled. The observation
 filter preserves delivery sequences; resulting gaps are intentional. Missing
 outcomes must not be filled with negative labels.
 
@@ -84,7 +83,7 @@ There is also an outage on day 56, stochastic duplicates and corrections,
 and list removals to exercise more than the named fixtures.
 
 The generator checks are in `tests/test_generator.py`. They validate the
-production event contract, exact reproducibility, distinct transaction counts,
+event contract, exact reproducibility, distinct transaction counts,
 duplicate identity, late arrivals, corrections, outage recovery, review-policy
 change, outcome separation, and preservation of delivery evidence during
 observation filtering. Engine-level acceptance tests verify the resulting

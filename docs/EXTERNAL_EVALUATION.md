@@ -1,14 +1,13 @@
 # Independent replay challenge protocol
 
-Status: proposed protocol, **zero completed independent trials recorded here**.
-The maintainer-authored synthetic suite is development evidence, not an outside
-challenge or a merchant validation.
+This protocol is ready for an independent evaluator. No trials have been
+completed yet.
 
 1. Recruit a data/ML engineer who did not implement the tool or author its cases.
    Agree permission to use inputs and publish anonymized findings before starting.
 2. Freeze a source revision and locked runtime. Have the evaluator follow the
    README unaided on a clean machine. Record setup commands, errors, elapsed time
-   and any maintainer help. Stop promotion if setup cannot be completed.
+   and any maintainer help. Record a setup failure before offering help.
 3. Before showing the implementation, let the evaluator define a previously
    unseen timeline incident: delayed label, correction, missing archived state,
    duplicated delivery, tied cutoff or a combination. They retain expected
@@ -26,11 +25,9 @@ challenge or a merchant validation.
    all failures. Separate first-attempt results from fixes and subsequent reruns.
 
 Success means the evaluator can explain a previously unseen temporal failure and
-trace the conclusion to the original evidence. A testimonial or test count alone
-does not establish that. Record sample size and selection limitations; a single
-case is a case study, not a population estimate.
+trace the conclusion to the original evidence. Record the sample size and how cases were selected; a single successful
+investigation is a case study.
 
 Suggested record: evaluator independence/consent, source SHA, runtime/OS, dataset
 permission/hash, predeclared expected result, baseline method, commands, assistance,
 observed result, errors/unknowns, timings, proposed fixes and publication permission.
-No contact or data collection is automated by this document.

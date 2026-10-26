@@ -1,18 +1,17 @@
-# Executed requirement audit — 2026-10-14
+# Verification — 14 October 2026
 
 This is a historical audit. Generated artifact paths refer to local files excluded
 from the source repository. See the [current verification record](VERIFICATION.md)
-for the published release and hosted checks.
+for later local and hosted checks.
 
 The temporal replay contract was audited, including all 12 acceptance cases.
 The audit found and fixed temporal target handling, input-validation and integrity
 defects. The final automated suite passes in both the documented local environment
-and a fresh PyPI environment. This remains an owned synthetic local product.
-Live browser/HTTP integration, hosted CI and genuine merchant validation remain
-separate uncompleted checks. No production or business validation is claimed.
+and a fresh PyPI environment. The run used synthetic data; live browser/HTTP
+integration, hosted CI and merchant evaluation were still to be done.
 
 The [2026-10-13 verification record](VERIFICATION_2026-10-13.md) and its artifacts
-are retained as historical evidence, not substituted for current results.
+record the preceding run.
 
 ## Executed commands
 
@@ -39,7 +38,7 @@ The full test suites ran concurrently; their durations are not isolated benchmar
 The 190 cases comprise 60 delivery, 44 temporal invariant, 21 API, 17 model,
 11 generator, 11 review regression, nine online, nine extended temporal/model,
 seven pipeline and one initial Sunday/Tuesday case. Parameterized cases count
-separately. No separate static type checker is configured or claimed.
+separately. No separate static type checker is configured.
 
 Fresh installation commands:
 
@@ -84,7 +83,7 @@ The larger profile and environment audit provide additional checks.
 | Validation tuning/calibration/frozen test | Model tests and 7,200-row profile | Disjoint fit/tune/calibration/test sets; frozen estimator unchanged; thin calibration support disclosed |
 | PR metrics, reliability, capacity, cohorts, amount denominators | `verify_models.py` independent formulas and extended raw-score test | 603 final-score checks plus 134 raw diagnostic checks; all held-out scores match archived estimators |
 | Mature/immature/declined/unknown/missing-state separation | Generator/model/report/CLI/API tests | Missing labels never genuine; coverage is separate from label maturity |
-| Availability/current-state/event-time baselines | Engine/pipeline baseline tests and reports | Same reconstructable denominator, raw divergences retained; no universal superiority claim |
+| Availability/current-state/event-time baselines | Engine/pipeline baseline tests and reports | Same reconstructable denominator; raw divergences retained |
 | Integrity faults, false alarms, online/offline agreement | `checks.py`, independent streaming tests, both full runs | 4/4 faults; zero false alarms on complete synthetic controls; no production capture comparison |
 | Seeded generator, delayed labels, policy shifts, flags/outages, oracle isolation | Generator tests and audited larger run | Fixed schedule/seed; zero oracle reads in normal larger workflow |
 | JSON/CSV/HTML, hashes/configuration/identity | Storage/report/CLI tests and environment audit | Six-file checksums on new runs; lossless JSON; documented CSV formula neutralization |
@@ -230,7 +229,7 @@ captured rather than applied to the `about:blank` origin. These tests do not ver
 HTTP deep links, browser downloads or a live connection. Initial failed/stalled
 attempts and pre-contrast results are preserved separately and are not counted in
 the final pass. Fresh screenshot attempts timed out even after bringing the page
-to the foreground; no current screenshot success is claimed.
+to the foreground.
 
 Live Uvicorn serving cannot bind even an ephemeral loopback socket:
 `PermissionError: [Errno 1] Operation not permitted`. `serve --port 8765` exits
@@ -240,12 +239,10 @@ bypassed. Actual ASGI application methods, headers, errors and export bytes pass
 browser-to-server integration, downloads and browser header enforcement remain
 unverified. Fresh browser screenshot capture also times out.
 
-No hosted CI repository is configured. The workflow configuration's equivalent
-commands passed locally, but no GitHub Actions execution is claimed. No source was
-pushed or publicly deployed. Genuine merchant usefulness requires permitted real
-incident/deployment records, archives and ingestion logs, provider normalization,
-production feature captures and measured investigation-time comparison. These
-inputs were requested but not supplied; none was fabricated.
+At this date, hosted CI and public deployment had not been configured; equivalent
+workflow commands passed locally. Merchant evaluation still needed permitted
+incident records, archives, ingestion logs, provider mappings, online feature
+captures and investigation-time comparisons.
 
 Earlier runs without export manifests retain semantic report checks but lack
 checksums for other exports. New final runs have verified six-file manifests.

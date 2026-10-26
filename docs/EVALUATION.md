@@ -2,7 +2,7 @@
 
 ## Reproduction and comparison
 
-`make demo` runs the complete release; `make evaluate` re-evaluates the most recent
+`make demo` runs the full workflow; `make evaluate` re-evaluates the most recent
 persisted dataset and candidate. `riskreplay compare TRANSACTION --policy-a HASH
 --candidate HASH` evaluates arbitrary archived versions against identical original
 available information. No label is an input feature.
@@ -16,8 +16,7 @@ Three baselines expose distinct historical failure modes:
    Deliberately naive hindsight replay.
 
 The report persists action/feature agreement numerators, denominators and IDs of
-feature-divergent transactions. It does not claim every policy action or model
-quality metric improves through temporal reconstruction. Recorded score corruption
+feature-divergent transactions. Recorded score corruption
 is measured separately from action/feature mismatch. Complete pristine originals
 are checked before injecting one score defect and one missing model reference.
 The saved run retains those defects so all three reproduction states are inspectable.
@@ -28,11 +27,11 @@ This diagnostic attribution is order-dependent; interactions are not a causal
 explanation or economic effect. A candidate evaluated before its fitted cutoff is
 clearly retrospective. Held-out quality claims concern only the frozen test window.
 
-## Genuine model pipeline
+## Model pipeline
 
 Features: amount, historical velocity count/sum, blocklist flag, risk flag, known
 outage indicator. Logging uses a labeled deterministic fixture scorer; evaluated
-logistic/HistGradientBoosting models are genuinely trained CPU estimators.
+logistic/HistGradientBoosting models are trained on the CPU.
 
 Actual split boundaries are 60/20/20 percent of the complete selected decision-time
 span, keeping ties together. Missing historical state never removes a decision
@@ -74,7 +73,7 @@ Metrics include:
 - Amount-weighted observed capture ratios with raw sums; one nominal currency,
   no recovery/net-loss assumption and no economic causal interpretation.
 
-Content-addressed joblib files preserve real estimators, fit IDs, seeds, selected
+Content-addressed joblib files preserve fitted estimators, fit IDs, seeds, selected
 parameters, code/dependency/schema hashes. Tests mutate final test data and maturity
 without changing model bytes; repeat fits produce identical artifacts in the lock.
 
@@ -98,8 +97,8 @@ them with a fresh source setup and a wheel installed into a clean PyPI environme
 see `var/verification/reproducibility-full.json` and the verification document.
 
 `.venv/bin/python scripts/verify_models.py --seed 17 --transactions 7200` runs a
-predeclared larger owned profile. It independently recomputes metrics, denominators,
-cohorts, reliability bins and capacity allocation without the production metric
+predeclared larger synthetic profile. It independently recomputes metrics, denominators,
+cohorts, reliability bins and capacity allocation without the application's metric
 functions; verifies saved estimator predictions and artifact hashes; and records
 whether any oracle file was read. This profile exercises fitted calibration but
 has only three positive calibration labels, so it does not establish reliable
@@ -109,13 +108,12 @@ or select a favorable seed.
 The report's throughput/latency measures one warm serial original+candidate
 comparison pass, including feature building, scoring and staged attribution. It
 excludes generation, training, timeline rendering and exports. Hardware and sample
-count are attached; this is a local measurement, not a service SLA. Recorded features
+count are attached; timings describe that local run. Recorded features
 come from the independent `OnlineReference` implementation, which consumes deliveries
 in availability/sequence order and maintains live state without calling `TemporalEngine`.
 The replay engine independently reconstructs all original snapshots. Raw recorded
 feature vectors are preserved in Parquet; the report includes the matched denominator
-and any divergent IDs. This validates the local simulation, not a production feature store.
+and any divergent IDs.
 
-The [Handbook and ARMS](REFERENCES.md) are conceptual baseline references. No
-upstream dataset, implementation run or published score is represented as our result.
-Actual observed local numbers and command evidence are in [VERIFICATION](VERIFICATION.md).
+The [Handbook and ARMS](REFERENCES.md) informed the baseline design.
+Measured results and commands are in [Verification](VERIFICATION.md).

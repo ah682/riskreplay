@@ -9,17 +9,15 @@ completed successfully. The public run/job records confirm that the configured
 acceptance job passed dependency installation, Ruff, the ordinary full pytest suite
 and Python compilation on the Python 3.12 Ubuntu workflow.
 
-These are current hosted software checks at that exact revision. They do not rerun
-the historical browser/model audits, establish cross-runtime model-byte identity,
-or demonstrate independent onboarding or real merchant investigations. This record
-makes no GitHub Release claim; the owner's licensing decision remains pending.
+These runs cover the software checks at that revision. Browser and model
+experiments are recorded separately below.
 
 ## Historical local maintenance checks — 26 October 2026, v0.1.1
 
 Executed in a fresh checkout using Python 3.12.3, uv 0.11.28 and Node 24.16.0.
 `make setup` created an owned `.venv` by copying 28 exact-version public
-packages available locally; it verified pinned versions and imports. This run
-does not establish a fresh network download or independent user onboarding.
+packages available locally and checked their pinned versions and imports.
+Dependency downloads were not exercised in this local run.
 
 | Command/check | Observed result |
 | --- | --- |
@@ -39,7 +37,7 @@ semantic hash `c618bffc9b74e3488e31d038a7ea86523cd66e787e0a233e2968140f8fdad25d`
 The default test window contains 359 transactions, 321 mature observed labels
 and 26 observed fraud labels. The 600-row reproducibility semantic hash is
 `859fd2a390c71c822076e1e63c4023da4e26552f4b82e6a6b9cb6b40d9bf5543`.
-These identities describe this pinned runtime, not cross-machine model equality.
+These identities describe the pinned runtime used for this run.
 Jobs overlapped; elapsed times are not isolated performance measurements.
 
 ## Historical hosted and browser evidence
@@ -50,15 +48,13 @@ succeeded for source `4fd3e1b` on 15 October. The
 [dated record](VERIFICATION_2026-10-16.md) and
 [release evidence](evidence/pages-release.json) preserve the earlier suite,
 7,200-row model audit and browser component/static-site measurements.
-Those browser/model audits were not rerun in this maintenance pass; their counts
-must not be presented as fresh checks of v0.1.1. The current hosted checks above
-are separate from those historical audits and from the restricted local record.
+The browser and model counts belong to those dated runs; the maintenance pass
+did not repeat them.
 
-## Remaining gates
+## Remaining checks
 
-Project-wide licensing awaits the owner decision. Live browser-to-local-API
-integration, physical pointer/native download behavior, cross-runtime model-byte
-identity and independent onboarding remain unverified in this pass. No permitted
-merchant dataset, external incident investigation or productivity trial was run.
-Use the [independent challenge protocol](EXTERNAL_EVALUATION.md) for future work
-and retain all [product limitations](LIMITATIONS.md).
+Live browser-to-local-API integration, physical pointer/native downloads and
+cross-runtime model-byte identity still need testing. There have been no
+independent onboarding trials, merchant-data evaluations or incident productivity
+studies. The [trial protocol](EXTERNAL_EVALUATION.md) describes how to run one;
+[limitations](LIMITATIONS.md) explains the model and deployment assumptions.

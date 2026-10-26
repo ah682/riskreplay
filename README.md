@@ -1,4 +1,4 @@
-# RiskReplay — ML Engineering for Temporal Fraud Evaluation
+# RiskReplay
 
 A fraud decision can change because the model changed, the rules changed, or the
 replay quietly used information that did not exist at the time. RiskReplay makes
@@ -15,12 +15,12 @@ Missing evidence stays visible throughout the investigation.
 [Model evidence](https://ah682.github.io/riskreplay/?view=models) ·
 [Build checks](https://github.com/ah682/riskreplay/actions)
 
-The demonstration contains **1,800 owned synthetic transactions**. The hosted
+The demonstration contains **1,800 synthetic transactions**. The hosted
 version is a read-only saved investigation: filtering, timelines, model evidence
 and exports run in the browser. Training, new replays and data imports run locally
 in Python.
 
-## The engineering problem
+## Why replay needs a timeline
 
 Event time alone is insufficient for historical evaluation. A transaction may
 arrive late, a list entry may be added tomorrow, and an outcome may be corrected
@@ -50,9 +50,9 @@ pass takes about five minutes:
    and rules. Then open **Model evidence** to inspect held-out metrics, label
    support and review-capacity denominators.
 
-## What the project implements
+## How it works
 
-| Area | Engineering detail |
+| Area | Implementation |
 | --- | --- |
 | Temporal data | Immutable identities, event/availability cutoffs, stable sequence ordering, deduplication and correction chains. Explicit coverage gaps and recovery rules. |
 | Classical ML | Logistic regression and `HistGradientBoostingClassifier`, plus a fixed rules baseline. Train-only preprocessing, validation tuning and eligibility-gated sigmoid calibration. |
@@ -119,10 +119,10 @@ otherwise it downloads the locked packages through `uv` or `pip`. Export optiona
 settings from [`.env.example`](.env.example); the CLI does not load it implicitly.
 `make reset` removes only the marked generated default demo directory.
 
-## Evidence and limits
+## Tests and results
 
-The [verification record](docs/VERIFICATION.md) contains executed commands, raw
-support and the remaining checks. The audited synthetic profiles establish:
+The [verification record](docs/VERIFICATION.md) records commands, results and
+source revisions. The October synthetic profiles produced these results:
 
 | Check | Observed result |
 | --- | --- |
@@ -133,20 +133,15 @@ support and the remaining checks. The audited synthetic profiles establish:
 
 The default saved run deliberately retains one corrupted score and one missing
 model reference to expose **matched**, **mismatched** and **incomplete** states.
-The original logging scorer is a deterministic fixture; the evaluated logistic
-and boosted classifiers are fitted scikit-learn estimators. This is classical ML
-engineering with no LLM dependency.
+The original logging scorer is a deterministic fixture; the logistic and boosted
+classifiers are fitted scikit-learn estimators.
 
-All data is owned synthetic data. These results do not establish merchant model
-quality, production throughput, recovered revenue or a causal fraud-loss effect.
-Candidate approvals of historically declined transactions have unknown outcomes.
-Feature/model/rule attribution is ordered diagnostic evidence, not causal
-attribution. The larger profile exercises calibration with only three positive
-calibration labels, so probability calibration remains weakly supported.
-
-The local API has been tested through its ASGI application; live browser-to-server
-operation remains a separate verification gate. Permitted merchant records and a
-real deployment investigation are also outside the current evidence.
+The data comes from the project's simulator. Merchant accuracy and business impact
+still need evaluation on real records. Outcomes for historically declined
+transactions remain unknown, and the feature/model/rule trace explains the order
+of changes rather than causality. Calibration is especially uncertain: the larger
+profile has only three positive calibration labels. See [limitations](docs/LIMITATIONS.md)
+for the evaluation assumptions and remaining integration checks.
 
 ## Read further
 
@@ -155,9 +150,9 @@ real deployment investigation are also outside the current evidence.
 - [Evaluation protocol](docs/EVALUATION.md) — time splits, label eligibility and metric definitions
 - [Data contract](docs/DATA.md) — normalized imports, provenance and permissions
 - [Model notes](docs/MODEL_NOTES.md) — estimator and training details
-- [Verification](docs/VERIFICATION.md) — measured results and audit evidence
+- [Verification](docs/VERIFICATION.md) — dated checks and measured results
 - [Static hosting](docs/PUBLISHING.md) — build and deploy the saved demonstration
 - [Limitations](docs/LIMITATIONS.md) · [References](docs/REFERENCES.md)
 
-Project-wide reuse terms are pending an owner decision; no project-wide license
-has been granted. Dependency licenses still apply.
+Original code is licensed under [MIT](LICENSE). See [NOTICE](NOTICE) for
+third-party terms and attribution.

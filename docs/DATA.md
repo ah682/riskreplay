@@ -33,8 +33,8 @@ Payloads:
 - `flag`: `account_id`, boolean `flagged`.
 - `outage`: `feature: "velocity"`, boolean `active`.
 - `checkpoint`: `scope: "blocklist" | "flags" | "velocity"`, boolean `complete`.
-  A complete checkpoint attests to coverage from that event time, not a magical
-  reconstruction of missing preceding facts. Initial simulator checkpoints attest
+  A complete checkpoint attests to coverage from that event time; it cannot
+  restore missing earlier facts. Initial simulator checkpoints attest
   to known empty state on 2025-01-04. A later incomplete marker invalidates coverage.
   For lists/flags, the first complete marker after the latest incomplete marker
   starts a recovery period; refreshes do not move its start. Each account stays
@@ -88,9 +88,9 @@ Absent coverage is incomplete, never interpreted as an empty list or zero veloci
 Feature provenance lists exact contributing event IDs, including coverage and
 outage records. Timelines retain duplicate deliveries and excluded later facts.
 
-## Owned generation and observation
+## Generated data and observation
 
-The 80-day sequential generator owns all records. It combines fixed named
+All records come from the project's 80-day sequential generator. It combines fixed named
 acceptance cases with seeded account bursts, amount/cohort variation, a policy
 shift, delayed transactions, duplicate deliveries, corrections, flags and outages.
 Labels arrive independently after the transaction; fraud delays are generally
@@ -98,7 +98,7 @@ longer. The normal observed stream contains no outcome events for actual archive
 declines. Reviewed transactions are assumed eventually fulfilled in this simulator.
 
 `simulation_oracle/` contains the generator's isolated latent truth. No training,
-report, API or replay reads it. No estimator experiment using that oracle is claimed.
+report, API or replay reads it.
 Development acceptance cases are the named `t-*` examples and seed-controlled test
 runs; model metrics use only the frozen final chronological window. There are no
 partner transactions or downloaded third-party datasets in the release.
@@ -119,8 +119,7 @@ New runs are written in a hidden staging directory and published by atomic renam
 only after every export and checksum is complete. A failed write is retryable;
 an unreadable persisted manifest makes that run unavailable without hiding healthy runs.
 
-For normalized imports, a provenance file such as the following describes only an
-owned fixture, never fictitious partner data:
+For an import from your own simulator, use provenance such as:
 
 ```json
 {"kind":"owned_synthetic","source":"my local simulator","permission":"owned fixture"}

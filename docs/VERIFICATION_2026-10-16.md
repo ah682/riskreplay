@@ -1,10 +1,10 @@
-> Historical record. See [current verification](VERIFICATION.md) for the latest local checks.
+> Historical record. See [current verification](VERIFICATION.md) for later checks.
 
 # Historical verification — 13–16 October 2026
 
 ## GitHub Pages release — 2026-10-16
 
-The final portfolio packaging check passes **246 tests** in 40.94s, Ruff and
+The packaging check passed **246 tests** in 40.94s, Ruff and
 Python compilation. All 34 Python files pass format checking. `make pages`
 generates and exports the 1,800-transaction demo. Six exporter tests verify file
 fidelity, synthetic-only
@@ -23,7 +23,7 @@ checks use DOM-dispatched events. The saved inspector's Home navigation also
 passed. All **seven published files** returned HTTP 200 and matched the site's
 SHA-256 manifest, including JSON, CSV and readable HTML exports. No JavaScript
 page errors were observed. [Machine-readable release evidence](evidence/pages-release.json)
-records the assertions, checksums and automation boundaries.
+records the assertions, checksums and interaction methods.
 
 The checked deployment is run `rr-0cb254753dba4b2a`, dataset
 `e9545ebf9c9c10dbc454fb9fa2298592dad2077250669222621975a21054cfac`, semantic hash
@@ -31,7 +31,7 @@ The checked deployment is run `rr-0cb254753dba4b2a`, dataset
 The hosted runner uses Python 3.12.15; the earlier workstation audit used 3.12.3.
 Artifact identities can differ across environments. The hosted decision CSV is
 byte-identical to the workstation export; cross-machine model-byte identity is
-not a completed gate.
+still untested.
 
 ## Core review — 2026-10-15
 
@@ -40,8 +40,7 @@ passed, but independent source reviews and small failure probes found eight defe
 Those defects were repaired with regression tests. The final source passes **240
 automated tests** and **249 browser component assertions**. Independent review of
 the repairs found no remaining Critical, Important or Minor findings after its
-three reporting follow-ups were resolved. This is evidence for the scoped local
-release, not a claim that software is bug-free or merchant-validated.
+three reporting follow-ups were resolved.
 
 The [2026-10-14 audit](VERIFICATION_2026-10-14.md) and
 [2026-10-13 audit](VERIFICATION_2026-10-13.md) remain historical records. Current
@@ -88,14 +87,14 @@ no unfinished application stub; the lone bare `pass` is an exception class body.
 | Exact-version package metadata and physical artifact checks | All 28 pins match; all six exports validated in each of three default runs; six trained model files hash-verified; 33 prior report files unchanged |
 
 Test and demo jobs ran concurrently; durations are not isolated performance
-benchmarks. There is no separate configured static type checker, and none is claimed.
+benchmarks. No separate static type checker is configured.
 
 The fresh uncached PyPI installation attempt failed at DNS resolution on
 `pypi.org`. The new clean environments therefore used exact locally available
 public distributions. The wheel was built with the declared cached hatchling
 1.27.0 backend, installed normally without an editable import, and executed in
 isolation. This does not repeat the successful uncached PyPI download recorded
-on 2026-10-14. No security restriction was bypassed.
+on 2026-10-14.
 
 ## Requirement-to-evidence mapping
 
@@ -115,7 +114,7 @@ cases are numbered explicitly.
 | **6. Missing list/model/feature state is incomplete** | Artifact/coverage tests and new temporal recovery regressions | Gap recovery cannot fabricate state; no replacement action/score |
 | **7. Tied timestamps are reproducible** | Cutoff tuple, boundary, shuffled input, recovery and split tests | Availability plus stable sequence, never time alone |
 | **8. Archived originals reproduce on complete fixtures** | Independent live recorder and both fresh profiles | 1,800/1,800 and 7,200/7,200 before deliberate defects |
-| **9. Candidate changes retain unknown counterfactuals** | Decline/approval regression, generator, CLI and browser cases | Default run has 229 differences; no ROI claim |
+| **9. Candidate changes retain unknown counterfactuals** | Decline/approval regression, generator, CLI and browser cases | Default run has 229 differences; declined approval outcomes stay unknown |
 | **10. Feature/model/rule changes distinguished** | Consequential-artifact trace tests and incident UI | Ordered diagnostic attribution, not causal attribution |
 | **11. Chronological and label leakage caught** | Training-only preprocessing, oracle/label/provenance tests, injected split checks, frozen-window regressions | Missing evidence cannot shift the final test period |
 | **12. Repeated semantic outputs identical** | Two 600-row reruns; three full 1,800-row source/wheel workflows | Runtime metadata excluded as documented |
@@ -146,7 +145,7 @@ Default seed 17, 1,800 transactions, run **`rr-5ac1cc7243268812`**:
 - Logistic AP 0.479215, PR-AUC 0.469964, Brier 0.055426.
   Boosted AP 0.427729, PR-AUC 0.425497, Brier 0.055032.
 - One serial comparison pass on AMD Ryzen 7 9700X: 308.84 comparisons/s,
-  median 3.057ms, p95 4.537ms. Other audit jobs ran concurrently; no SLA claim.
+  median 3.057ms, p95 4.537ms. Other audit jobs ran concurrently.
 - Dataset hash `5af04809e8506f384562b1af7f5a090469e9b86c7dbc83a2aab34422edb87e69`;
   semantic hash `44b75b0a874717de0cff70535388754065a499db78f93a827d6ef749e75a8827`.
 
@@ -161,7 +160,7 @@ Larger seed-17 profile, 7,200 transactions, run **`rr-78c1bc02dac8ba9b`**:
 - 630 independently recomputed metric assertions; no oracle reads; all 18
   production Python/static files unchanged during the 300.98-second audit.
 
-## Explicitly uncompleted checks
+## Remaining checks at this date
 
 In the 15 October audit, loopback binding failed with `EPERM`. Actual ASGI requests and browser
 components were tested separately; live HTTP integration with the local FastAPI
@@ -170,11 +169,11 @@ HTTP, deep links and export-file bytes now pass the Pages checks above. Browser
 file navigation was blocked in the earlier audit and was not bypassed here.
 Fresh hosted pointer and screenshot attempts timed out after 5s; the browser
 download event was not observed within 10s. The live assertions therefore use
-DOM clicks, input events and keyboard-handler events. No fresh screenshot,
-physical-pointer success or browser-native saved-download success is claimed.
+DOM clicks, input events and keyboard-handler events. Fresh screenshots,
+physical-pointer interactions and native saved downloads remained untested.
 
 The browser collector deliberately records `fully_verified: false` despite all
 component assertions passing. Hosted CI, repository publication and Pages
-deployment are now verified separately. Genuine merchant
-usefulness still requires the permitted data and comparison described in
+deployment passed separate checks. Merchant evaluation still needs the data
+and comparisons described in
 [LIMITATIONS](LIMITATIONS.md).

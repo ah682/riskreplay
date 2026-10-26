@@ -5,8 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "riskreplay"
 version = "0.1.1"
-description = "A local, evidence-aware temporal fraud policy replay lab"
+description = "Replay fraud decisions and evaluate models using the evidence available at the time."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "pyarrow==20.0.0",

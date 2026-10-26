@@ -21,21 +21,21 @@ feature matrix; unavailable corrections stay outside fitted-row hashes. The
 training audit records the exact target and availability used for each fitted row.
 Exported test rows omit outcome histories and hide unavailable target values.
 
-A real logistic regression uses a training-fitted median imputer and standard
-scaler. A real CPU histogram gradient-boosted classifier fits two recorded parameter
+Logistic regression uses a training-fitted median imputer and standard
+scaler. A CPU histogram gradient-boosted classifier fits two recorded parameter
 configurations on the training set. The first chronological half of validation
 selects by average precision, then Brier score, then declared grid order. Internal
 random validation/early stopping is disabled. A sigmoid calibrator fits only the
 second validation half with a frozen base estimator when that half contains at
 least 30 mature labels and at least three examples of each class. Insufficient
 calibration evidence is reported explicitly. There is no final refit on validation
-or test. Model artifacts record actual estimators, calibration, seed, software
+or test. Model artifacts record fitted estimators, calibration, seed, software
 versions, feature/code hashes and the exact fit/tuning/calibration transaction IDs.
 Calibration uses explicit two-fold prediction with `FrozenEstimator`; tests verify
 that its base estimator's state and predictions do not change. Metadata includes
 class counts, prediction folds and whether the base estimator was refitted. The
-larger verification profile exercises calibration with 309 rows but only three
-fraud positives; this verifies execution, not strong statistical calibration evidence.
+larger verification profile fits calibration with 309 rows but only three fraud
+positives, leaving calibration quality uncertain.
 
 The test evaluation cutoff defaults to the last decision time. An explicitly later
 cutoff can reveal delayed observed labels without changing model training. Future
@@ -62,8 +62,8 @@ outcomes and declined transactions remain separate. A missing label is never zer
   only mature observed transactions. Transaction amount does not equal realized
   loss. The measures do not estimate recovered revenue or prevented fraud loss.
 - Observational selection by the original policy limits all metrics. Declined
-  outcomes under approval remain unknown. Synthetic data is not real merchant
-  validation, and this pipeline does not run a synthetic oracle estimator.
+  outcomes under approval remain unknown. The synthetic evaluation excludes the
+  generator oracle.
 
 ## Artifact trust and reproducibility
 
@@ -79,7 +79,7 @@ libraries, Python releases or CPU architectures are not promised. The final test
 mutation test changes test features and labels and verifies that fitted artifacts
 and tuning remain identical.
 
-## API references checked
+## Runtime and references
 
 The locally available pinned runtime is scikit-learn 1.8.0, NumPy 2.4.6,
 SciPy 1.17.1 and joblib 1.5.3. On 2026-10-14 all 28 locked distributions were
@@ -93,5 +93,5 @@ The installed signatures and official version-specific documentation were checke
 - [Average precision definition](https://scikit-learn.org/1.8/modules/generated/sklearn.metrics.average_precision_score.html)
 
 Model-specific verification: `.venv/bin/python -m pytest tests/test_modeling.py -q`.
-Executed results belong in `docs/VERIFICATION.md` after integration, rather than
-being inferred from these protocol descriptions.
+Record the command and results in `docs/VERIFICATION.md` when updating the model
+pipeline.
