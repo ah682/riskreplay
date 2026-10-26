@@ -85,6 +85,8 @@ normal replay, training, API and reporting paths.
 Use **Python 3.12** and `make`:
 
 ```bash
+git clone https://github.com/ah682/riskreplay.git
+cd riskreplay
 make demo
 ```
 
@@ -148,6 +150,7 @@ real deployment investigation are also outside the current evidence.
 
 ## Read further
 
+- [Contributing](CONTRIBUTING.md) · [Release notes](CHANGELOG.md) · [Independent evaluation protocol](docs/EXTERNAL_EVALUATION.md)
 - [Architecture](docs/ARCHITECTURE.md) — module boundaries, artifact identity and failure handling
 - [Evaluation protocol](docs/EVALUATION.md) — time splits, label eligibility and metric definitions
 - [Data contract](docs/DATA.md) — normalized imports, provenance and permissions
@@ -155,3 +158,6 @@ real deployment investigation are also outside the current evidence.
 - [Verification](docs/VERIFICATION.md) — measured results and audit evidence
 - [Static hosting](docs/PUBLISHING.md) — build and deploy the saved demonstration
 - [Limitations](docs/LIMITATIONS.md) · [References](docs/REFERENCES.md)
+
+Project-wide reuse terms are pending an owner decision; no project-wide license
+has been granted. Dependency licenses still apply.

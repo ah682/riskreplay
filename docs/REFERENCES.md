@@ -18,15 +18,6 @@ we do not claim to have rerun ARMS or reproduced the Handbook's published result
 | [Apache Arrow 20 Parquet documentation](https://arrow.apache.org/docs/20.0/python/parquet.html) | Immutable Parquet event and decision bundles, round-trip verified with installed PyArrow 20.0.0. |
 | [Python 3.12 sqlite3](https://docs.python.org/3.12/library/sqlite3.html) | SQLite provides the local query index. Parquet and content hashes are authoritative; the SQL index is rebuildable. |
 
-The selected environment pins Python 3.12 and all runtime/test distributions in
-`requirements.lock`. The environment initially blocked network installs; setup reused
-28 exact-version installed public Python distributions, copied to an isolated local
-virtual environment without modifying their source environments. No sandbox bypass
-was used. On 2026-10-14 the extended audit downloaded all 28 pins from PyPI without a
-package cache into an empty virtual environment, checked compatibility, built and
-installed the declared wheel, and reproduced the default demonstration outside the
-source tree. That historical check remains valid for its date. On 2026-10-15 a fresh PyPI
-installation failed at DNS resolution. The new review instead verified clean offline
-setup from the same 28 exact pins, built a new wheel using cached hatchling 1.27.0,
-checked all 29 installed distributions, and compared full default runs across the
-working source, clean source and isolated installed wheel.
+Python 3.12 and runtime/test versions are pinned in `requirements.lock`.
+See [Verification](VERIFICATION.md) for executed setup, build and installed-wheel
+checks; earlier environment results are retained in the dated audit records.
