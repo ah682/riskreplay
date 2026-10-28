@@ -61,3 +61,5 @@ regressions independent of the user's actual cache.
 
 Original code uses the [MIT licence](LICENSE). Preserve third-party notices
 listed in [NOTICE](NOTICE).
+
+Install ShellCheck alongside actionlint when checking workflow edits, so embedded shell commands are validated as they are on the GitHub runner.

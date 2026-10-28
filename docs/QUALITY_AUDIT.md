@@ -1,6 +1,6 @@
 What this repo does: RiskReplay reconstructs payment decisions from evidence available at their recorded cutoff, compares policies, and evaluates classifiers on chronological splits. Authoritative Parquet bundles and immutable reports support a read-only inspector. This audit assumes a local investigation workflow, including interrupted writes and malformed archives, rather than production payment traffic.
 
-**Audit date:** 28 October 2026. **Method:** Ponytail 5.3.2 and relevant Superpowers 7.0.1 skills. Runtime flows were traced, each finding was reproduced, regression tests failed before repair, and focused plus full checks were rerun. Final integration review and hosted execution of the revised workflows are pending.
+**Audit date:** 28 October 2026. **Method:** Ponytail 5.3.2 and relevant Superpowers 7.0.1 skills. Runtime flows were traced, each finding was reproduced, regression tests failed before repair, and focused plus full checks were rerun. Independent integration review found no unresolved issue. Hosted execution of the revised workflows is pending.
 
 ## Must fix — resolved
 
@@ -30,8 +30,8 @@ What this repo does: RiskReplay reconstructs payment decisions from evidence ava
 
 5. **Offline setup writes through shared package-cache files** ([setup.py](../scripts/setup.py)).
    - **What this is:** Offline installation copies exact-version distributions into the local environment; uv may already have hard-linked that environment to its cache.
-   - **Reproduced problem:** Final `make pages` verification reached a `SameFileError` when source and destination shared an inode. Copying different bytes onto another hard-linked destination could also change the package used by another environment. A matching setup marker did not detect missing or incorrect installed versions.
-   - **Small fix and outcome:** Copy to a temporary sibling and replace the destination entry, including package trees, top-level modules and the Ruff launcher. Check actual installed versions before trusting the marker. [Setup regressions](../tests/test_setup.py) cover same-inode and different-version links, interrupted-copy preservation, and stale markers.
+   - **Reproduced problem:** Final `make pages` verification reached a `SameFileError` when source and destination shared an inode. Copying different bytes onto another hard-linked destination could also change the package used by another environment. A matching setup marker did not detect missing or incorrect installed versions. Review then reproduced an upgrade blocked by obsolete metadata and files, plus failures from damaged setup markers.
+   - **Small fix and outcome:** Copy to a temporary sibling and replace the destination entry, including package trees, top-level modules and the Ruff launcher. Use uv or pip to remove obsolete installed versions before copying; their shared cache bytes remain intact. Validate installed versions before trusting the marker, treat damaged markers as stale, and clear prior readiness before repair. [The 17 setup regressions](../tests/test_setup.py) cover actual uv/pip removal, old and duplicate metadata, obsolete files, hard links, interrupted copies and marker recovery.
    - **If it regresses:** A routine rebuild can fail or modify a shared cache and another environment's package bytes.
 
 ## Should fix — resolved
@@ -46,11 +46,11 @@ What this repo does: RiskReplay reconstructs payment decisions from evidence ava
 
 | Check | Baseline | After repairs |
 | --- | --- | --- |
-| `.venv/bin/python -m pytest -q` | 246 passed | 280 after the evidence/recovery repairs; 289 after adding nine setup regressions, with the updated dependencies |
+| `.venv/bin/python -m pytest -q` | 246 passed | 297 passed with the updated dependencies, including 17 setup regressions |
 | Ruff, Python compilation, JavaScript syntax | Existing checks | Passed |
 | Two fresh 80-transaction workflows | Not a baseline accuracy comparison | Identical dataset, semantic and model-byte hashes within the updated runtime |
 | `.venv/bin/python scripts/browser_qa.py --baseline-evidence` | Missing/mixed-denominator assertions failed | 5/5 checks passed in actual Chrome at 768px |
-| `make setup` and `make pages` | Offline copy failed on shared cache links | All 28 exact-pin distributions copied, runtime imports passed, and the 1,800-transaction demo rebuilt as `rr-d8a46462689d27a8` with its static site |
+| `make setup` and `make pages` | Offline copy failed on shared cache links | All 28 exact-pin distributions copied, runtime imports passed, and the 1,800-transaction demo rebuilt as `rr-c5ae292e4c488950` with its static site |
 | `.venv/bin/python scripts/browser_qa.py` | Existing saved-inspector checks | 19/19 checks at 1440px and 19/19 at 500px on the rebuilt demo; no JavaScript errors |
 
 The repair scope and outcomes are recorded in the [runtime plan](superpowers/plans/2026-10-28-runtime-audit.md). Reproduce the bounded checks with:
@@ -72,7 +72,7 @@ make pages
 
 [CI](../.github/workflows/ci.yml) runs both browser modes and additionally uses `make reproduce` for two 600-transaction workflows. That repeatability workload is separate from this audit's two 80-transaction runs and the rebuilt 1,800-transaction demo.
 
-Default dependency fixes pin PyArrow 23.0.1, AnyIO 4.14.2, Starlette 1.3.1 and certifi 2026.10.19. The bounded repeatability checks and final 289-test suite passed with that stack; both browser modes passed after the setup repair and demo rebuild. Verification jobs use pinned action commits, read-only repository permissions, time limits, cancellation of superseded runs, browser checks and actionlint. [Dependency audits](../.github/workflows/dependencies.yml) run on pushes, pull requests and weekly schedules, with [Dependabot](../.github/dependabot.yml) proposing action updates. Hosted results for the revised workflows are pending.
+Default dependency fixes pin PyArrow 23.0.1, AnyIO 4.14.2, Starlette 1.3.1 and certifi 2026.10.19. The bounded repeatability checks and final 297-test suite passed with that stack; both browser modes passed after the setup repair and demo rebuild. Verification jobs use pinned action commits, read-only repository permissions, time limits, cancellation of superseded runs, browser checks and actionlint. [Dependency audits](../.github/workflows/dependencies.yml) run on pushes, pull requests and weekly schedules, with [Dependabot](../.github/dependabot.yml) proposing action updates. Hosted results for the revised workflows are pending.
 
 Verdict: All six reproduced evidence, recovery and setup defects are repaired within the existing architecture. Historical saved reports remain inspectable; replay with an unavailable historical interpreter must still report incomplete rather than silently substitute current code.
 

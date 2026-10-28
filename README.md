@@ -156,3 +156,5 @@ for the evaluation assumptions and remaining integration checks.
 
 Original code is licensed under [MIT](LICENSE). See [NOTICE](NOTICE) for
 third-party terms and attribution.
+
+The [October maintenance audit](docs/QUALITY_AUDIT.md) records the latest fixes, checks and remaining validation work.
