@@ -56,26 +56,40 @@ def main():
     if sys.version_info[:2] != (3, 12):
         print("RiskReplay's lock is verified on Python 3.12; use Python 3.12 for reproducibility.")
     python = ENV / "bin" / "python"
+    site = (
+        ENV / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages"
+    )
+    wanted = {normalized(name): version for name, version in PINS}
+    installed = list(metadata.distributions(path=[str(site)]))
+    obsolete = {
+        normalized(dist.metadata.get("Name", ""))
+        for dist in installed
+        if normalized(dist.metadata.get("Name", "")) in wanted
+        and dist.version != wanted[normalized(dist.metadata.get("Name", ""))]
+    }
     lock_hash = __import__("hashlib").sha256((ROOT / "requirements.lock").read_bytes()).hexdigest()
     marker = ENV / "riskreplay-environment.json"
+    try:
+        previous = json.loads(marker.read_text())
+    except (FileNotFoundError, ValueError):
+        previous = None
     if (
         python.exists()
-        and marker.exists()
-        and json.loads(marker.read_text()).get("lock_hash") == lock_hash
+        and isinstance(previous, dict)
+        and previous.get("lock_hash") == lock_hash
+        and not obsolete
         and installed_versions(python) == dict(PINS)
     ):
         print("Pinned RiskReplay environment ready.")
         return
+    # A failed repair must not leave a previous ready marker behind.
+    marker.unlink(missing_ok=True)
     venv.EnvBuilder(with_pip=False, symlinks=True).create(ENV)
-    site = (
-        ENV / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages"
-    )
     roots = [Path(p) for p in sys.path if p and ("site-packages" in p or "dist-packages" in p)]
     roots += list((Path.home() / ".local/share/pipx/venvs").glob("*/lib/python3.12/site-packages"))
     roots += list((Path.home() / ".cache/uv/archive-v0").glob("*"))
     if os.environ.get("RISKREPLAY_PACKAGE_SOURCE"):
         roots.insert(0, Path(os.environ["RISKREPLAY_PACKAGE_SOURCE"]))
-    wanted = {normalized(name): version for name, version in PINS}
     found = {}
     for root in roots:
         if root.resolve() == site.resolve():
@@ -84,6 +98,44 @@ def main():
             name = normalized(dist.metadata.get("Name", ""))
             if wanted.get(name) == dist.version and name not in found:
                 found[name] = dist
+    if obsolete:
+        # Package managers remove RECORD-owned files as well as old metadata.
+        # Unlinking their entries leaves any hard-linked cache bytes untouched.
+        if shutil.which("uv"):
+            subprocess.run(
+                [
+                    "uv",
+                    "pip",
+                    "uninstall",
+                    "--python",
+                    str(python),
+                    "--offline",
+                    "--no-cache",
+                    *sorted(obsolete),
+                ],
+                check=True,
+            )
+        else:
+            subprocess.run([str(python), "-m", "ensurepip"], check=True)
+            for name in sorted(obsolete):
+                # pip removes one installed version at a time; an interrupted
+                # earlier copy may have left both the old and target metadata.
+                copies = sum(
+                    normalized(dist.metadata.get("Name", "")) == name for dist in installed
+                )
+                for _ in range(copies):
+                    subprocess.run(
+                        [
+                            str(python),
+                            "-m",
+                            "pip",
+                            "--disable-pip-version-check",
+                            "uninstall",
+                            "--yes",
+                            name,
+                        ],
+                        check=True,
+                    )
     if len(found) == len(wanted):
         print(f"Offline setup: copying {len(found)} exact-version installed distributions.")
         for name, dist in found.items():

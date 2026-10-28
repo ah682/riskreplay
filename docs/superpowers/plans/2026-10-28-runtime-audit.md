@@ -115,3 +115,20 @@ Follow-up outcomes:
 - Final installed-Chrome checks passed 19/19 at 1440px and 19/19 at 500px against that fresh run, plus 5/5 baseline-evidence checks at 768px.
 - Two fresh 80-transaction workflows were repeated after formatting: dataset identity, both model byte hashes and semantic hash `cffed450bb8a094ed8236e012698d2462953403444cf6467c2bf2462b2cb986f` agreed within the current pinned runtime.
 - Source-hash scope: setup changes are outside archived interpreter hashes. Formatting changed only `policy.py` among the feature/rules/model/online hash inputs; its final SHA-256 is `d8cd5794422a4d312ca0f1d664e9517805166f32e98a1f0970c25caf972ab20e`. Historical interpreter mismatches remain explicit. Root owns independent final review and publication.
+
+## Review follow-up: actual package upgrades and damaged setup markers
+
+The independent reviewer reproduced an upgrade blocker with a normally named `ruff-0.9.dist-info`: copying 1.0 left both metadata directories and obsolete files. The earlier wrong-version fixture incorrectly placed version 0.9 metadata inside a 1.0 directory. Root also identified truncated/non-object marker recovery as part of this repair.
+
+- [x] Correct the regression to install normally named old metadata and RECORD-tracked obsolete files; cover the actual available package manager and the pip fallback, preserving hard-linked old cache bytes. Also exercise a previously interrupted state containing both versions.
+- [x] Add invalid/non-object marker cases and verify failed repair cannot retain a ready marker. Observe the failures before editing setup.
+- [x] Use the existing package manager to uninstall obsolete installed distributions before offline copying; retain staged file copies, exact pins, native import verification and the fresh offline path. Treat malformed marker data as stale.
+- [x] Run focused setup tests, `make check`, whole-tree format/static checks, one fresh `make pages` and both browser modes; commit only setup/tests/this plan and return to the independent reviewer. Archived interpreter/model source hashes remain unchanged by this follow-up.
+
+Review follow-up outcomes:
+
+- The corrected normal-directory upgrade cases, duplicate-version states, malformed markers and retained-marker failure all reproduced before the fix. All 17 setup cases now pass, including real uv and pip uninstalls in temporary virtual environments. Obsolete RECORD-owned files disappear; their hard-linked cache counterparts keep their original bytes. No distribution file deletion is implemented by hand.
+- Failed repairs clear the old ready marker; truncated JSON, arrays, null and string markers are rebuilt after successful pin/import validation. File permission and package-manager failures still propagate.
+- Final `make check`: 297 tests passed in 46.10s; all 37 Python files pass format checks, and Ruff, compilation, both JavaScript syntax checks and `git diff --check` pass.
+- `make pages` reran the 1,800-transaction workflow successfully. The unchanged interpreter source yields the same run `rr-c5ae292e4c488950`; installed Chrome again passed 38/38 inspector checks and 5/5 baseline-evidence checks.
+- Final setup SHA-256: `7a583ce3a83a4245ea6fe9a834b4ae6c149ced356c36338c1c8dbb6997c2a253`. The independent reviewer found no further issue in the preliminary follow-up diff; final commit review and publication remain with root.

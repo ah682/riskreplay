@@ -4,6 +4,7 @@ import hashlib
 import importlib.metadata as metadata
 import json
 import os
+import shutil
 import subprocess
 import sys
 import venv
@@ -92,10 +93,22 @@ def test_offline_copy_preserves_shared_cache_files(offline_setup, member, same_s
     assert marker["versions"] == {"ruff": "1.0"}
 
 
-def test_failed_offline_copy_preserves_previous_file(offline_setup, monkeypatch):
-    _, env, site, _ = offline_setup
+@pytest.mark.parametrize("previous_marker", [False, True], ids=["no-marker", "stale-marker"])
+def test_failed_offline_copy_preserves_previous_file(offline_setup, monkeypatch, previous_marker):
+    root, env, site, _ = offline_setup
     destination = site / "fixture_module.py"
     destination.write_text("previous complete module\n")
+    if previous_marker:
+        (env / "riskreplay-environment.json").write_text(
+            json.dumps(
+                {
+                    "lock_hash": hashlib.sha256(
+                        (root / "requirements.lock").read_bytes()
+                    ).hexdigest(),
+                    "versions": {"ruff": "1.0"},
+                }
+            )
+        )
     copy = setup.shutil.copy2
 
     def interrupted_copy(src, dst, *args, **kwargs):
@@ -113,9 +126,26 @@ def test_failed_offline_copy_preserves_previous_file(offline_setup, monkeypatch)
     assert not list(site.rglob(".copying-*"))
 
 
-@pytest.mark.parametrize("installed_version", [None, "0.9"], ids=["missing", "wrong-version"])
+def install_obsolete_distribution(root, site):
+    dist_info = site / "ruff-0.9.dist-info"
+    dist_info.mkdir()
+    (dist_info / "METADATA").write_text("Metadata-Version: 2.1\nName: ruff\nVersion: 0.9\n")
+    shared = root / "other-environment-old-module.py"
+    shared.write_text("obsolete API kept in the old cache\n")
+    os.link(shared, site / "obsolete_fixture_module.py")
+    (dist_info / "RECORD").write_text(
+        "ruff-0.9.dist-info/METADATA,,\nruff-0.9.dist-info/RECORD,,\nobsolete_fixture_module.py,,\n"
+    )
+    return shared
+
+
+@pytest.mark.parametrize(
+    ("installed_version", "force_pip"),
+    [(None, False), ("0.9", False), ("0.9", True)],
+    ids=["missing", "wrong-version", "wrong-version-pip"],
+)
 def test_matching_marker_does_not_hide_incorrect_installed_versions(
-    offline_setup, installed_version
+    offline_setup, monkeypatch, installed_version, force_pip
 ):
     root, env, site, _ = offline_setup
     marker = env / "riskreplay-environment.json"
@@ -128,16 +158,67 @@ def test_matching_marker_does_not_hide_incorrect_installed_versions(
             }
         )
     )
+    if force_pip:
+        which = shutil.which
+        monkeypatch.setattr(
+            setup.shutil, "which", lambda name: None if name == "uv" else which(name)
+        )
     if installed_version is not None:
-        dist_info = site / "ruff-1.0.dist-info"
-        dist_info.mkdir()
-        (dist_info / "METADATA").write_text(f"Name: ruff\nVersion: {installed_version}\n")
+        shared = install_obsolete_distribution(root, site)
 
     setup.main()
 
     installed = {
-        dist.metadata["Name"]: dist.version for dist in metadata.distributions(path=[site])
+        dist.metadata["Name"]: dist.version
+        for dist in metadata.distributions(path=[site])
+        if dist.metadata["Name"] == "ruff"
     }
     assert installed == {"ruff": "1.0"}
     assert (site / "fixture_module.py").read_text() == "VALUE = 'new module'\n"
     assert json.loads(marker.read_text())["versions"] == {"ruff": "1.0"}
+    if installed_version is not None:
+        assert not (site / "ruff-0.9.dist-info").exists()
+        assert not (site / "obsolete_fixture_module.py").exists()
+        assert shared.read_text() == "obsolete API kept in the old cache\n"
+
+
+@pytest.mark.parametrize("force_pip", [False, True], ids=["default-manager", "pip"])
+def test_matching_marker_does_not_accept_duplicate_installed_versions(
+    offline_setup, monkeypatch, force_pip
+):
+    root, _, site, _ = offline_setup
+    setup.main()
+    shared = install_obsolete_distribution(root, site)
+    if force_pip:
+        which = shutil.which
+        monkeypatch.setattr(
+            setup.shutil, "which", lambda name: None if name == "uv" else which(name)
+        )
+
+    setup.main()
+
+    installed = [
+        (dist.metadata["Name"], dist.version)
+        for dist in metadata.distributions(path=[site])
+        if dist.metadata["Name"] == "ruff"
+    ]
+    assert installed == [("ruff", "1.0")]
+    assert not (site / "obsolete_fixture_module.py").exists()
+    assert shared.read_text() == "obsolete API kept in the old cache\n"
+
+
+@pytest.mark.parametrize("marker_contents", ['{"lock_hash":', "[]", "null", '"invalid marker"'])
+def test_damaged_setup_marker_is_rebuilt(offline_setup, marker_contents):
+    root, env, site, _ = offline_setup
+    marker = env / "riskreplay-environment.json"
+    marker.write_text(marker_contents)
+
+    setup.main()
+
+    repaired = json.loads(marker.read_text())
+    assert (
+        repaired["lock_hash"]
+        == hashlib.sha256((root / "requirements.lock").read_bytes()).hexdigest()
+    )
+    assert repaired["versions"] == {"ruff": "1.0"}
+    assert (site / "fixture_module.py").read_text() == "VALUE = 'new module'\n"
