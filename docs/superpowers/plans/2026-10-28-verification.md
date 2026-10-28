@@ -18,7 +18,11 @@
 ## Tasks
 
 - [x] Update `.github/workflows/` action versions, permissions, cancellation and evidence retention.
-- [ ] Run existing browser workflows in CI and validate workflow syntax with actionlint.
+- [x] Run existing browser workflows in CI and validate workflow syntax with actionlint.
 - [x] Add `.github/workflows/dependencies.yml` for push/PR and weekly advisory checks; add Actions/npm update proposals in `.github/dependabot.yml` where applicable.
 - [x] Verify lock changes through the project suite and dependency audit.
-- [ ] Document reproducible contributor checks, independent review and exact hosted results.
+- [x] Document reproducible contributor checks, independent review and exact hosted results.
+
+## Hosted results
+
+Commit `b4db01bdf77cdcfa0b98c2f213ebf7b7fdd834c2` passed [release checks](https://github.com/ah682/riskreplay/actions/runs/40672845435), the [dependency audit](https://github.com/ah682/riskreplay/actions/runs/40672845459), and [Pages deployment](https://github.com/ah682/riskreplay/actions/runs/40672845546). Local actionlint included ShellCheck; hosted validation also passed. Independent review found no unresolved issue. The [audit report](../../QUALITY_AUDIT.md) records the test scope and remaining limits.

@@ -1,6 +1,6 @@
 What this repo does: RiskReplay reconstructs payment decisions from evidence available at their recorded cutoff, compares policies, and evaluates classifiers on chronological splits. Authoritative Parquet bundles and immutable reports support a read-only inspector. This audit assumes a local investigation workflow, including interrupted writes and malformed archives, rather than production payment traffic.
 
-**Audit date:** 28 October 2026. **Method:** Ponytail 5.3.2 and relevant Superpowers 7.0.1 skills. Runtime flows were traced, each finding was reproduced, regression tests failed before repair, and focused plus full checks were rerun. Independent integration review found no unresolved issue. Hosted execution of the revised workflows is pending.
+**Audit date:** 28 October 2026. **Method:** Ponytail 5.3.2 and relevant Superpowers 7.0.1 skills. Runtime flows were traced, each finding was reproduced, regression tests failed before repair, and focused plus full checks were rerun. Independent integration review found no unresolved issue. Hosted release checks, dependency audits and demo deployment passed.
 
 ## Must fix — resolved
 
@@ -72,7 +72,15 @@ make pages
 
 [CI](../.github/workflows/ci.yml) runs both browser modes and additionally uses `make reproduce` for two 600-transaction workflows. That repeatability workload is separate from this audit's two 80-transaction runs and the rebuilt 1,800-transaction demo.
 
-Default dependency fixes pin PyArrow 23.0.1, AnyIO 4.14.2, Starlette 1.3.1 and certifi 2026.10.19. The bounded repeatability checks and final 297-test suite passed with that stack; both browser modes passed after the setup repair and demo rebuild. Verification jobs use pinned action commits, read-only repository permissions, time limits, cancellation of superseded runs, browser checks and actionlint. [Dependency audits](../.github/workflows/dependencies.yml) run on pushes, pull requests and weekly schedules, with [Dependabot](../.github/dependabot.yml) proposing action updates. Hosted results for the revised workflows are pending.
+Default dependency fixes pin PyArrow 23.0.1, AnyIO 4.14.2, Starlette 1.3.1 and certifi 2026.10.19. The bounded repeatability checks and final 297-test suite passed with that stack; both browser modes passed after the setup repair and demo rebuild. Verification jobs use pinned action commits, read-only repository permissions, time limits, cancellation of superseded runs, browser checks and actionlint. [Dependency audits](../.github/workflows/dependencies.yml) run on pushes, pull requests and weekly schedules, with [Dependabot](../.github/dependabot.yml) proposing action updates.
+
+Hosted verification of commit `b4db01bdf77cdcfa0b98c2f213ebf7b7fdd834c2` passed:
+
+- [Release checks](https://github.com/ah682/riskreplay/actions/runs/40672845435): 296 tests passed; the installed-launcher test skipped before project setup. Formatting/static checks, a fresh demo, paired 600-transaction repeatability, both browser modes and workflow validation passed. The `replay-verification` artifact retains the generated evidence for 14 days.
+- [Dependency audit](https://github.com/ah682/riskreplay/actions/runs/40672845459): the installed pinned environment has no known reported advisories.
+- [Pages deployment](https://github.com/ah682/riskreplay/actions/runs/40672845546): `make check` passed all 297 tests after project setup, including the installed launcher, and the rebuilt [saved inspector](https://ah682.github.io/riskreplay/) was published successfully.
+
+Subsequent documentation-only commits do not change this tested implementation.
 
 Verdict: All six reproduced evidence, recovery and setup defects are repaired within the existing architecture. Historical saved reports remain inspectable; replay with an unavailable historical interpreter must still report incomplete rather than silently substitute current code.
 
