@@ -721,7 +721,7 @@ function bootRiskReplay() {
       baselines.forEach((baseline) => {
         const metrics = baseline.summary || baseline;
         const tr = node("tr");
-        tr.append(node("td", "", human(baseline.name || baseline.regime || baseline.mode)), node("td", "table-number", `${number(metrics.action_matches ?? metrics.matched)} / ${number(metrics.n)} · ${percent(metrics.action_agreement)}`), node("td", "table-number", `${number(metrics.feature_matches)} / ${number(metrics.n)} · ${percent(metrics.feature_agreement)}`), node("td", "table-number", number(metrics.incomplete)), node("td", "trace-excerpt", valueText(baseline.description || baseline.information_regime || baseline.note || "See the JSON export for raw baseline evidence.")));
+        tr.append(node("td", "", human(baseline.name || baseline.regime || baseline.mode)), node("td", "table-number", `${number(metrics.action_matches ?? metrics.matched)} / ${number(metrics.n)} · ${percent(metrics.action_agreement)}`), node("td", "table-number", `${number(metrics.feature_matches)} / ${number(metrics.feature_comparisons ?? metrics.n)} · ${percent(metrics.feature_agreement)}`), node("td", "table-number", number(metrics.incomplete)), node("td", "trace-excerpt", valueText(baseline.description || baseline.information_regime || baseline.note || "See the JSON export for raw baseline evidence.")));
         body.append(tr);
       });
       baselinePanel.append(wrapper);

@@ -99,6 +99,13 @@ async (page) => {
         check("missing evaluation evidence", (await text("#model-content")).includes("Model evidence is unavailable"));
         await selectView("integrity");
         check("missing integrity is not a pass", (await text("#integrity-content")).includes("Their absence is not a passing result"));
+      } else if (config.scenario === "baseline_evidence") {
+        await selectView("integrity");
+        const baselineCells = await page.locator("#integrity-content tbody tr").evaluateAll((elements) => elements.map((row) => Array.from(row.cells, (cell) => cell.textContent)));
+        check("absent feature evidence remains unavailable", baselineCells[0]?.[2] === "0 / 0 · Unavailable");
+        check("mixed evidence uses captured-feature denominator", baselineCells[1]?.[2] === "1 / 1 · 100.0%");
+        check("legacy baseline keeps its recorded denominator", baselineCells[2]?.[2] === "2 / 2 · 100.0%");
+        check("action denominator includes missing feature snapshots", baselineCells.every((cells) => cells[1] === "2 / 2 · 100.0%"));
       } else if (config.scenario === "evidence_counts") {
         const context = await text("#run-context-text");
         check("run distinguishes declined outcomes", context.includes("1 declined outcomes"));

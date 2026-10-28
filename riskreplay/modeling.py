@@ -33,6 +33,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from threadpoolctl import threadpool_limits
 
+from .artifacts import write_immutable
+
 FEATURE_NAMES = (
     "amount",
     "velocity_1h",
@@ -560,17 +562,11 @@ def _write_artifact(root: Path, bundle: dict[str, Any]) -> str:
     joblib.dump(bundle, buffer, compress=0, protocol=5)
     data = buffer.getvalue()
     digest = hashlib.sha256(data).hexdigest()
-    directory = root / "models"
-    directory.mkdir(parents=True, exist_ok=True)
-    path = directory / f"{digest}.joblib"
+    path = root / "models" / f"{digest}.joblib"
     try:
-        with path.open("xb") as stream:
-            stream.write(data)
-    except FileExistsError:
-        if path.read_bytes() != data:
-            raise ModelingError(
-                f"refusing to overwrite modified immutable artifact {path}"
-            ) from None
+        write_immutable(path, data)
+    except FileExistsError as exc:
+        raise ModelingError(f"refusing to overwrite modified immutable artifact {path}") from exc
     return digest
 
 

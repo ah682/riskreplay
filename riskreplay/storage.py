@@ -24,8 +24,12 @@ from .schema import (
 
 
 def write_json(path: Path, value: dict | list):
+    data = json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
+    with tempfile.TemporaryDirectory(prefix=".writing-", dir=path.parent) as temporary:
+        staged = Path(temporary) / path.name
+        staged.write_text(data)
+        staged.replace(path)
 
 
 def _parquet(path: Path, rows: list[dict], json_fields: tuple[str, ...]):

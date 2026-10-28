@@ -45,6 +45,14 @@ reproduction path. Trained files include feature schema, fit IDs, code/dependenc
 versions and seeds. Hash checks detect alteration; they do not establish trust in
 an external pickle.
 
+JSON and trained-model artifacts are fully written to temporary sibling storage
+before an exclusive hard link publishes their final name. An interrupted write
+leaves no partial final artifact. Competing writers may reuse identical bytes;
+different bytes at the same immutable name remain an error and are never replaced.
+Mutable JSON records, including `latest.json`, replace their previous file only
+after the new bytes are complete. Fully explicit CLI selections can bypass a
+damaged latest pointer; commands that need its defaults still report the error.
+
 Chronological boundaries use all selected decisions before evidence filtering.
 Missing-state rows remain in their windows and coverage/capacity totals, with null
 predictions; only complete features enter fitting or scoring. Model and cohort

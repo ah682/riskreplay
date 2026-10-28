@@ -52,6 +52,30 @@ def sign_report(report: dict) -> dict:
     return result
 
 
+def baseline_evidence_report() -> dict:
+    """Hand-checked display fixture for absent, mixed and legacy feature evidence."""
+    return sign_report(
+        {
+            "mode": "test_fixture",
+            "decisions": [],
+            "summary": {},
+            "evaluation": {},
+            "run_id": "ui-baseline-evidence-fixture",
+            "integrity": {"checks": [{"name": "Fixture evidence", "passed": True}]},
+            "baselines": [
+                {"name": "absent", "n": 2, "action_matches": 2, "action_agreement": 1,
+                 "feature_matches": 0, "feature_comparisons": 0, "feature_unavailable": 2,
+                 "feature_agreement": None, "incomplete": 0},
+                {"name": "mixed", "n": 2, "action_matches": 2, "action_agreement": 1,
+                 "feature_matches": 1, "feature_comparisons": 1, "feature_unavailable": 1,
+                 "feature_agreement": 1, "incomplete": 0},
+                {"name": "legacy", "n": 2, "action_matches": 2, "action_agreement": 1,
+                 "feature_matches": 2, "feature_agreement": 1, "incomplete": 0},
+            ],
+        }
+    )
+
+
 def render_component(
     report: dict | None = None, *, responses: dict | None = None, transport: str = "captured"
 ) -> str:
@@ -258,11 +282,13 @@ def prepare(data_dir: Path, output_dir: Path) -> dict:
             },
         }
     )
+    baseline_report = baseline_evidence_report()
     html_by_case = {
         "saved": render_component(report),
         "empty_records": render_component(fixture_report),
         "untrusted_text": render_component(injection_report),
         "evidence_counts": render_component(evidence_report),
+        "baseline_evidence": render_component(baseline_report),
         "no_runs": render_component(responses=responses["empty"]),
         "partial_runs": render_component(responses=responses["partial"]),
         "report_error": render_component(responses=responses["detail_error"]),
@@ -278,6 +304,7 @@ def prepare(data_dir: Path, output_dir: Path) -> dict:
         ("empty-records", "empty_records", 390, 844),
         ("untrusted-text", "untrusted_text", 1440, 1100),
         ("evidence-counts", "evidence_counts", 390, 844),
+        ("baseline-evidence", "baseline_evidence", 768, 1024),
         ("no-runs", "no_runs", 390, 844),
         ("partial-runs", "partial_runs", 1440, 1100),
         ("report-error", "report_error", 390, 844),

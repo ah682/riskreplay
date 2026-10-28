@@ -3,6 +3,7 @@
 
 No mock API, extra packages, remote browser, personal profile or downloaded browser.
 HTML copies instrument only local DOM interactions; canonical reports are untouched.
+Pass --baseline-evidence for the standalone missing-feature display regression.
 """
 
 from __future__ import annotations
@@ -18,6 +19,26 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "var/verification"
+BASELINE_QA = r"""
+<script>
+window.addEventListener('load', () => {
+ const q=s=>document.querySelector(s); const results=[];
+ const check=(name,passed)=>results.push({name,passed:!!passed});
+ try {
+  check('report loaded', !q('#report-content').hidden);
+  q('[data-view="integrity"]').click();
+  const rows=Array.from(document.querySelectorAll('#integrity-content tbody tr'),
+   row=>Array.from(row.cells,cell=>cell.textContent));
+  check('absent features remain unknown',rows[0]?.[2]==='0 / 0 · Unavailable');
+  check('mixed evidence uses captured denominator',rows[1]?.[2]==='1 / 1 · 100.0%');
+  check('legacy denominator remains visible',rows[2]?.[2]==='2 / 2 · 100.0%');
+  check('action denominator keeps all decisions',rows.every(row=>row[1]==='2 / 2 · 100.0%'));
+ } catch(error) {results.push({name:'runtime exception',passed:false,error:String(error)});}
+ const output=document.createElement('output');output.id='browser-verification';output.hidden=true;
+ output.textContent=JSON.stringify({width:innerWidth,results});document.body.append(output);
+});
+</script>
+"""
 QA = r"""
 <script>
 window.addEventListener('load', () => setTimeout(() => {
@@ -73,12 +94,43 @@ window.addEventListener('load', () => setTimeout(() => {
 """
 
 
+def verify_baselines(chrome):
+    from verify_browser import baseline_evidence_report, render_component
+
+    with tempfile.TemporaryDirectory(prefix="riskreplay-baseline-browser-") as temp:
+        temp = Path(temp)
+        page = temp / "baseline.html"
+        markup = render_component(baseline_evidence_report())
+        page.write_text(markup.replace("</body>", BASELINE_QA + "</body>"))
+        result = subprocess.run(
+            [chrome, "--headless=new", "--disable-gpu", "--disable-dev-shm-usage",
+             "--no-first-run", f"--user-data-dir={temp / 'profile'}", "--window-size=768,1024",
+             "--virtual-time-budget=3000", "--dump-dom", page.as_uri()],
+            capture_output=True, text=True, timeout=30, check=True,
+        )
+    match = re.search(r'<output id="browser-verification"[^>]*>(.*?)</output>', result.stdout, re.S)
+    if not match:
+        raise RuntimeError("Baseline browser checks did not complete: " + result.stderr[-1000:])
+    evidence = {
+        "protocol": "Installed Chrome, saved-file UI with explicit baseline evidence fixture",
+        **json.loads(html.unescape(match.group(1))),
+    }
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    (OUTPUT / "browser-baselines.json").write_text(json.dumps(evidence, indent=2))
+    print(json.dumps(evidence, indent=2))
+    if not all(check["passed"] for check in evidence["results"]):
+        raise SystemExit(1)
+
+
 def main():
     chrome = shutil.which("google-chrome") or shutil.which("chromium")
     if chrome is None:
         raise SystemExit(
             "No installed headless Chrome available; browser verification not performed."
         )
+    if "--baseline-evidence" in sys.argv:
+        verify_baselines(chrome)
+        return
     latest = json.loads((ROOT / "var/demo/latest.json").read_text())
     source = ROOT / "var/demo/runs" / latest["run_id"] / "inspector.html"
     OUTPUT.mkdir(parents=True, exist_ok=True)

@@ -61,6 +61,11 @@ features must be finite numeric values, not booleans. `feature_values` is an obj
 with nonempty string names: an empty object means no captured feature evidence;
 zero-valued features are actual evidence and are checked during reproduction.
 
+Replay baselines report action agreement over all reconstructable decisions (`n`).
+Feature agreement uses only decisions with a captured feature snapshot
+(`feature_comparisons`); `feature_unavailable` counts the remaining reconstructable
+decisions. With no captured snapshots, feature agreement is null, not zero.
+
 ## Exact temporal semantics
 
 Available facts satisfy both:

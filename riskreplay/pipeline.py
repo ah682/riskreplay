@@ -273,7 +273,12 @@ def evaluate_run(
         tx = (
             old.get("transaction")
             or new.get("transaction")
-            or engine.transactions[decision.transaction_id][0].to_dict()
+            or next(
+                event.to_dict()
+                for event in engine.visible(decision.cutoff)
+                if event.event_type == "transaction"
+                and event.transaction_id == decision.transaction_id
+            )
         )
         label = engine.label(decision.transaction_id, decision.original_action, label_cutoff)
         explanation = compared["explanation"]
@@ -343,6 +348,7 @@ def evaluate_run(
     baselines = []
     for regime in ("available", "event_time_only", "current_state"):
         action_matches = feature_matches = total = incomplete = 0
+        feature_comparisons = 0
         divergent_ids = []
         for decision in decisions:
             out = (
@@ -362,6 +368,9 @@ def evaluate_run(
                 continue
             total += 1
             action_matches += out["action"] == decision.original_action
+            if not decision.feature_values:
+                continue
+            feature_comparisons += 1
             equal = out["features"] == decision.feature_values
             feature_matches += equal
             if not equal:
@@ -373,10 +382,13 @@ def evaluate_run(
                 "n": total,
                 "incomplete": incomplete,
                 "action_matches": action_matches,
+                "feature_comparisons": feature_comparisons,
+                "feature_unavailable": total - feature_comparisons,
                 "feature_matches": feature_matches,
-                "feature_mismatches": total - feature_matches,
+                "feature_mismatches": feature_comparisons - feature_matches,
                 "action_agreement": action_matches / total if total else None,
-                "feature_agreement": feature_matches / total if total else None,
+                "feature_agreement": feature_matches / feature_comparisons
+                if feature_comparisons else None,
                 "divergent_transaction_ids": divergent_ids,
             }
         )

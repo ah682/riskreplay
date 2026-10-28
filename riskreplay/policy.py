@@ -72,8 +72,22 @@ def archive_policy(
     )
 
 
+def _validate_number(value, field: str) -> None:
+    try:
+        valid = type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise MissingArtifact(f"Historical {field} must be a finite number")
+
+
 def score_model(store: ArtifactStore, spec: dict, features: dict) -> float:
     if spec.get("type") == "fixture_logistic":
+        _validate_number(spec.get("bias"), "model bias")
+        if not isinstance(spec.get("weights"), dict):
+            raise MissingArtifact("Historical model weights must be an object")
+        for name, weight in spec["weights"].items():
+            _validate_number(weight, f"model weight {name}")
         absent = set(spec["weights"]) - set(features)
         if absent:
             raise MissingArtifact(
@@ -94,6 +108,8 @@ def score_model(store: ArtifactStore, spec: dict, features: dict) -> float:
 
 
 def apply_rules(features: dict, score: float, rules: dict) -> tuple[str, list[dict]]:
+    for field in ("decline_amount", "decline_score", "review_amount", "review_score", "review_velocity"):
+        _validate_number(rules.get(field), f"rule {field}")
     tests = [
         (
             "blocklist",
@@ -178,6 +194,8 @@ def evaluate(
     }
     try:
         policy = store.get("policies", policy_hash)
+        if type(policy.get("schema_version")) is not int or policy["schema_version"] != 1:
+            raise MissingArtifact("Historical policy schema_version must be integer 1")
         specs = {}
         for kind in ("features", "rules", "models"):
             key = policy["model" if kind == "models" else kind]
