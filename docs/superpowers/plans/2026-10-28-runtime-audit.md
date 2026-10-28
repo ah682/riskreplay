@@ -93,3 +93,25 @@ Interface: fully explicit replay/train or compare/evaluate selection does not re
 - Final verification: 280 tests passed in 40.05s before dependency updates and 43.69s with PyArrow 23.0.1, AnyIO 4.14.2, Starlette 1.3.1 and certifi 2026.10.19. Ruff, Python compilation and both JavaScript syntax checks passed.
 - Fresh 80-transaction reproducibility: dataset identity, both fitted artifact byte hashes and semantic reports agreed between two temporary roots in the updated pinned runtime. This is not a cross-runtime byte-identity claim.
 - No fresh full-size training, live browser-to-server integration or native download verification was performed by this implementation worker. Root owns the final full-demo publication checks.
+
+## Follow-up: offline setup with shared package-cache files
+
+Root's final `make pages` exposed `SameFileError` after `uv pip sync`: installed files and offline reuse sources can share an inode. In-place copies can also modify another environment or cached version when their contents differ. This follow-up is authorized to refresh the full 1,800-transaction demo after the setup repair.
+
+Files: `scripts/setup.py`, `tests/test_setup.py`, this plan appendix. Root subsequently authorized format-only changes to the seven earlier runtime files rejected by the newly required CI format check: `riskreplay/cli.py`, `riskreplay/pipeline.py`, `riskreplay/policy.py`, `scripts/browser_qa.py`, `scripts/verify_browser.py`, `tests/test_artifact_recovery.py`, `tests/test_runtime_audit.py`.
+
+- [x] Add real temporary hard-link cases for package-tree files, top-level files and the Ruff launcher, covering identical cache links and different source content; verify source/cache bytes remain intact.
+- [x] Add an interrupted-copy case that preserves the old destination and propagates the failure, plus marker cases proving exact installed versions are checked before trusting a matching lock marker.
+- [x] Run `.venv/bin/python -m pytest tests/test_setup.py -q` and observe the original copy/marker failures.
+- [x] Copy into sibling temporary files and replace destination directory entries, retaining offline discovery and post-install version/import checks. Validate installed versions before the marker fast path.
+- [x] Rerun setup regressions, `make setup`, `make pages`, the complete pytest/static checks, and both installed-Chrome modes of `scripts/browser_qa.py` against the refreshed demo.
+- [x] Commit only the owned repair and authorized formatting paths; send the sixth finding, exact verification and source-hash scope to root for independent review/publication.
+
+Follow-up outcomes:
+
+- All nine setup regressions failed against the original implementation, then passed. Actual temporary venv interpreters check installed metadata; file-copy tests use real hard links. Only the unrelated scientific import smoke test is substituted in those package fixtures.
+- `make setup` reused all 28 pinned distributions and passed real runtime imports. `make pages` then succeeded, including the repeated setup fast path. After authorized formatting changed `policy.py`'s archived rules hash, the demo was generated again from the final source: 1,800 transactions, run `rr-c5ae292e4c488950`.
+- Final `make check`: all 289 tests passed in 41.07s, plus Ruff and Python compilation. Whole-tree `ruff format --check` passed for all 37 Python files; both JavaScript syntax checks and `git diff --check` passed.
+- Final installed-Chrome checks passed 19/19 at 1440px and 19/19 at 500px against that fresh run, plus 5/5 baseline-evidence checks at 768px.
+- Two fresh 80-transaction workflows were repeated after formatting: dataset identity, both model byte hashes and semantic hash `cffed450bb8a094ed8236e012698d2462953403444cf6467c2bf2462b2cb986f` agreed within the current pinned runtime.
+- Source-hash scope: setup changes are outside archived interpreter hashes. Formatting changed only `policy.py` among the feature/rules/model/online hash inputs; its final SHA-256 is `d8cd5794422a4d312ca0f1d664e9517805166f32e98a1f0970c25caf972ab20e`. Historical interpreter mismatches remain explicit. Root owns independent final review and publication.

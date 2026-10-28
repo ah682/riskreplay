@@ -22,14 +22,24 @@ def test_incomplete_report_uses_transaction_version_at_cutoff(tmp_path):
     events = checkpoints() + [
         transaction(when="2025-01-05T10:00:00Z", amount=75, seq=4),
         event(
-            "correction", "transaction", "2025-01-05T10:00:00Z", 5,
+            "correction",
+            "transaction",
+            "2025-01-05T10:00:00Z",
+            5,
             {"account_id": "alice", "amount": 150, "cohort": "corrected"},
-            tx="target", available="2025-01-05T11:00:00Z", supersedes="target",
+            tx="target",
+            available="2025-01-05T11:00:00Z",
+            supersedes="target",
         ),
         event(
-            "future-correction", "transaction", "2025-01-05T10:00:00Z", 6,
+            "future-correction",
+            "transaction",
+            "2025-01-05T10:00:00Z",
+            6,
             {"account_id": "alice", "amount": 900, "cohort": "future"},
-            tx="target", available="2025-01-05T13:00:00Z", supersedes="correction",
+            tx="target",
+            available="2025-01-05T13:00:00Z",
+            supersedes="correction",
         ),
     ]
     decision = Decision("target", "2025-01-05T12:00:00Z", 5, "f" * 64, 0.01, "approve")

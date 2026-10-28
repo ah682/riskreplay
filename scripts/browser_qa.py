@@ -103,10 +103,22 @@ def verify_baselines(chrome):
         markup = render_component(baseline_evidence_report())
         page.write_text(markup.replace("</body>", BASELINE_QA + "</body>"))
         result = subprocess.run(
-            [chrome, "--headless=new", "--disable-gpu", "--disable-dev-shm-usage",
-             "--no-first-run", f"--user-data-dir={temp / 'profile'}", "--window-size=768,1024",
-             "--virtual-time-budget=3000", "--dump-dom", page.as_uri()],
-            capture_output=True, text=True, timeout=30, check=True,
+            [
+                chrome,
+                "--headless=new",
+                "--disable-gpu",
+                "--disable-dev-shm-usage",
+                "--no-first-run",
+                f"--user-data-dir={temp / 'profile'}",
+                "--window-size=768,1024",
+                "--virtual-time-budget=3000",
+                "--dump-dom",
+                page.as_uri(),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=True,
         )
     match = re.search(r'<output id="browser-verification"[^>]*>(.*?)</output>', result.stdout, re.S)
     if not match:

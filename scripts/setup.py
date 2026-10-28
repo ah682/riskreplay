@@ -14,6 +14,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import venv
 from pathlib import Path
 
@@ -30,6 +31,27 @@ def normalized(name):
     return name.lower().replace("_", "-").replace(".", "-")
 
 
+def installed_versions(python):
+    check = (
+        "import importlib.metadata as m, json\nversions = {}\nfor name in "
+        + repr([name for name, _ in PINS])
+        + ":\n    try:\n        versions[name] = m.version(name)\n"
+        "    except m.PackageNotFoundError:\n        versions[name] = None\n"
+        "print(json.dumps(versions))\n"
+    )
+    return json.loads(subprocess.check_output([str(python), "-c", check], text=True))
+
+
+def copy_package_file(source, destination):
+    """Replace the directory entry without writing through an existing cache link."""
+    destination = Path(destination)
+    with tempfile.TemporaryDirectory(prefix=".copying-", dir=destination.parent) as temporary:
+        staged = Path(temporary) / destination.name
+        shutil.copy2(source, staged)
+        staged.replace(destination)
+    return str(destination)
+
+
 def main():
     if sys.version_info[:2] != (3, 12):
         print("RiskReplay's lock is verified on Python 3.12; use Python 3.12 for reproducibility.")
@@ -40,6 +62,7 @@ def main():
         python.exists()
         and marker.exists()
         and json.loads(marker.read_text()).get("lock_hash") == lock_hash
+        and installed_versions(python) == dict(PINS)
     ):
         print("Pinned RiskReplay environment ready.")
         return
@@ -79,17 +102,21 @@ def main():
                 dst = site / member
                 if src.is_dir():
                     shutil.copytree(
-                        src, dst, dirs_exist_ok=True, ignore=shutil.ignore_patterns("__pycache__")
+                        src,
+                        dst,
+                        dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns("__pycache__"),
+                        copy_function=copy_package_file,
                     )
                 elif src.is_file():
-                    shutil.copy2(src, dst)
+                    copy_package_file(src, dst)
             if name == "ruff":
                 candidates = list(source.glob("ruff-*.data/scripts/ruff")) + [
                     source.parent.parent.parent / "bin/ruff"
                 ]
                 for candidate in candidates:
                     if candidate.is_file():
-                        shutil.copy2(candidate, ENV / "bin/ruff")
+                        copy_package_file(candidate, ENV / "bin/ruff")
                         break
     elif shutil.which("uv"):
         subprocess.run(
@@ -111,12 +138,7 @@ def main():
         subprocess.run(
             [str(python), "-m", "pip", "install", "-r", str(ROOT / "requirements.lock")], check=True
         )
-    check = (
-        "import importlib.metadata as m,json; print(json.dumps({n:m.version(n) for n in "
-        + repr([n for n, _ in PINS])
-        + "}))"
-    )
-    versions = json.loads(subprocess.check_output([str(python), "-c", check], text=True))
+    versions = installed_versions(python)
     for name, version in PINS:
         if versions[name] != version:
             raise RuntimeError(f"Version mismatch for {name}")

@@ -16,7 +16,11 @@ def artifact_writer(request, tmp_path):
     if request.param == "json":
         store = ArtifactStore(tmp_path)
         return lambda: store.put("models", {"owned": "recovery fixture"}), ".json", MissingArtifact
-    return lambda: _write_artifact(tmp_path, {"owned": "recovery fixture"}), ".joblib", ModelingError
+    return (
+        lambda: _write_artifact(tmp_path, {"owned": "recovery fixture"}),
+        ".joblib",
+        ModelingError,
+    )
 
 
 def test_interrupted_artifact_write_is_retryable(artifact_writer, tmp_path, monkeypatch):

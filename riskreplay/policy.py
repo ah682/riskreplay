@@ -108,7 +108,13 @@ def score_model(store: ArtifactStore, spec: dict, features: dict) -> float:
 
 
 def apply_rules(features: dict, score: float, rules: dict) -> tuple[str, list[dict]]:
-    for field in ("decline_amount", "decline_score", "review_amount", "review_score", "review_velocity"):
+    for field in (
+        "decline_amount",
+        "decline_score",
+        "review_amount",
+        "review_score",
+        "review_velocity",
+    ):
         _validate_number(rules.get(field), f"rule {field}")
     tests = [
         (

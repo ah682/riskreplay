@@ -388,7 +388,8 @@ def evaluate_run(
                 "feature_mismatches": feature_comparisons - feature_matches,
                 "action_agreement": action_matches / total if total else None,
                 "feature_agreement": feature_matches / feature_comparisons
-                if feature_comparisons else None,
+                if feature_comparisons
+                else None,
                 "divergent_transaction_ids": divergent_ids,
             }
         )

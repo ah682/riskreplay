@@ -37,13 +37,12 @@ def _selection(args):
         latest = json.loads(latest_path.read_text()) if latest_path.exists() else {}
         if not isinstance(latest, dict) or any(
             not isinstance(latest[key], str) or not latest[key]
-            for key in ("dataset", "run_id", "candidate_policy") if key in latest
+            for key in ("dataset", "run_id", "candidate_policy")
+            if key in latest
         ):
             raise ValueError("latest.json must be an object with string selection values")
     except (OSError, ValueError):
-        if args.dataset is None or (
-            args.command in {"compare", "evaluate"} and not args.candidate
-        ):
+        if args.dataset is None or (args.command in {"compare", "evaluate"} and not args.candidate):
             raise
         latest = {}
     dataset = args.dataset or (args.data_dir / latest["dataset"] if latest else None)
